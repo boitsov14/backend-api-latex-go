@@ -41,7 +41,7 @@ func svg(c *fiber.Ctx) error {
 	log.Info("Compiling LaTeX to DVI")
 	cmd := exec.Command("latex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex)) // #nosec G204
 	out, err := cmd.CombinedOutput()
-	// dimension too large
+	// Dimension too large
 	if strings.Contains(string(out), "! Dimension too large") {
 		log.Warn("Dimension too large")
 		c.Set("App-Error-Code", "DIM_TOO_LARGE")
@@ -57,6 +57,12 @@ func svg(c *fiber.Ctx) error {
 	if strings.Contains(string(out), "! TeX capacity exceeded") {
 		log.Warn("TeX capacity exceeded")
 		c.Set("App-Error-Code", "TEX_CAPACITY_EXCEEDED")
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	// Unable to read an entire line
+	if strings.Contains(string(out), "! Unable to read an entire line") {
+		log.Warn("Unable to read an entire line")
+		c.Set("App-Error-Code", "UNABLE_TO_READ_LINE")
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	if err != nil {
