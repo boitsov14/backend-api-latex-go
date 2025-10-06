@@ -55,7 +55,7 @@ lint:
 
 # Run the project
 run:
-    ENV=dev go run .
+    ENV=dev go run ./src/.
 
 ###################################
 # Dependencies
