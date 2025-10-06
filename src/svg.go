@@ -42,15 +42,29 @@ func svg(c *fiber.Ctx) error {
 	cmd := exec.Command("latex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex)) // #nosec G204
 	out, err := cmd.CombinedOutput()
 	// dimension too large
-	if strings.Contains(string(out), "Dimension too large") {
+	if strings.Contains(string(out), "! Dimension too large") {
 		log.Info("Dimension too large")
-		return c.JSON(fiber.Map{"dimensionTooLarge": true})
+		c.Set("App-Error-Code", "DIM_TOO_LARGE")
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	// Arithmetic overflow
+	if strings.Contains(string(out), "! Arithmetic overflow") {
+		log.Info("Arithmetic overflow")
+		c.Set("App-Error-Code", "ARITHMETIC_OVERFLOW")
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	// TeX capacity exceeded
+	if strings.Contains(string(out), "! TeX capacity exceeded") {
+		log.Info("TeX capacity exceeded")
+		c.Set("App-Error-Code", "TEX_CAPACITY_EXCEEDED")
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	if err != nil {
 		// unexpected latex error
 		log.Error(err)
 		slog.Error("Unexpected latex error", "output", string(out))
-		return c.JSON(fiber.Map{"err": true})
+		c.Set("App-Error-Code", "UNEXPECTED_LATEX_ERROR")
+		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 	dvi := filepath.Join(tmp, "out.dvi")
 	// check if dvi exists
@@ -58,7 +72,8 @@ func svg(c *fiber.Ctx) error {
 		// unexpected latex error
 		log.Error(err)
 		slog.Error("Unexpected latex error", "output", string(out))
-		return c.JSON(fiber.Map{"err": true})
+		c.Set("App-Error-Code", "UNEXPECTED_LATEX_ERROR")
+		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 	// compile dvi to svg
 	log.Info("Compiling DVI to SVG")
@@ -68,14 +83,16 @@ func svg(c *fiber.Ctx) error {
 		// unexpected latex error
 		log.Error(err)
 		slog.Error("Unexpected latex error", "output", string(out))
-		return c.JSON(fiber.Map{"err": true})
+		c.Set("App-Error-Code", "UNEXPECTED_LATEX_ERROR")
+		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 	svg, err := os.ReadFile(filepath.Join(tmp, "out.svg")) // #nosec G304
 	if err != nil {
 		// unexpected latex error
 		log.Error(err)
 		slog.Error("Unexpected latex error", "output", string(out))
-		return c.JSON(fiber.Map{"err": true})
+		c.Set("App-Error-Code", "UNEXPECTED_LATEX_ERROR")
+		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 	// success
 	log.Info("SVG generated successfully")
