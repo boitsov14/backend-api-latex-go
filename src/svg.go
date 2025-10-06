@@ -39,18 +39,18 @@ func svg(c *fiber.Ctx) error {
 	}
 	// compile tex to dvi
 	log.Info("Compiling LaTeX to DVI")
-	cmd := exec.Command("latex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, tex) // #nosec G204
+	cmd := exec.Command("latex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex)) // #nosec G204
 	out, err := cmd.CombinedOutput()
+	// dimension too large
+	if strings.Contains(string(out), "Dimension too large") {
+		log.Info("Dimension too large")
+		return c.JSON(fiber.Map{"dimensionTooLarge": true})
+	}
 	if err != nil {
 		// unexpected latex error
 		log.Error(err)
 		slog.Error("Unexpected latex error", "output", string(out))
 		return c.JSON(fiber.Map{"err": true})
-	}
-	// dimension too large
-	if strings.Contains(string(out), "Dimension too large") {
-		log.Info("Dimension too large")
-		return c.JSON(fiber.Map{"dimensionTooLarge": true})
 	}
 	dvi := filepath.Join(tmp, "out.dvi")
 	// check if dvi exists
