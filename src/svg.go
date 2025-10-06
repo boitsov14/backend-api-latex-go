@@ -79,5 +79,7 @@ func svg(c *fiber.Ctx) error {
 	}
 	// success
 	log.Info("SVG generated successfully")
-	return c.JSON(fiber.Map{"svg": string(svg)})
+	// set Content-Type to image/svg+xml
+	c.Type("svg")
+	return c.Send(svg)
 }
