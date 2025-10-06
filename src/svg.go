@@ -43,19 +43,19 @@ func svg(c *fiber.Ctx) error {
 	out, err := cmd.CombinedOutput()
 	// dimension too large
 	if strings.Contains(string(out), "! Dimension too large") {
-		log.Info("Dimension too large")
+		log.Warn("Dimension too large")
 		c.Set("App-Error-Code", "DIM_TOO_LARGE")
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	// Arithmetic overflow
 	if strings.Contains(string(out), "! Arithmetic overflow") {
-		log.Info("Arithmetic overflow")
+		log.Warn("Arithmetic overflow")
 		c.Set("App-Error-Code", "ARITHMETIC_OVERFLOW")
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	// TeX capacity exceeded
 	if strings.Contains(string(out), "! TeX capacity exceeded") {
-		log.Info("TeX capacity exceeded")
+		log.Warn("TeX capacity exceeded")
 		c.Set("App-Error-Code", "TEX_CAPACITY_EXCEEDED")
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
