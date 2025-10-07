@@ -31,7 +31,7 @@ func main() {
 	l := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	slog.SetDefault(l)
 
-	// main API
+	// endpoints
 	app.Post("/svg", svg)
 
 	// init port

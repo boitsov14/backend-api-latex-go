@@ -40,65 +40,53 @@ func svg(c *fiber.Ctx) error {
 	// compile tex to dvi
 	log.Info("Compiling LaTeX to DVI")
 	cmd := exec.Command("latex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex)) // #nosec G204
-	out, err := cmd.CombinedOutput()
-	// Dimension too large
-	if strings.Contains(string(out), "! Dimension too large") {
-		log.Warn("Dimension too large")
-		c.Set("App-Error-Code", "DIM_TOO_LARGE")
-		return c.SendStatus(fiber.StatusBadRequest)
-	}
-	// Arithmetic overflow
-	if strings.Contains(string(out), "! Arithmetic overflow") {
-		log.Warn("Arithmetic overflow")
-		c.Set("App-Error-Code", "ARITHMETIC_OVERFLOW")
-		return c.SendStatus(fiber.StatusBadRequest)
-	}
-	// TeX capacity exceeded
-	if strings.Contains(string(out), "! TeX capacity exceeded") {
-		log.Warn("TeX capacity exceeded")
-		c.Set("App-Error-Code", "TEX_CAPACITY_EXCEEDED")
-		return c.SendStatus(fiber.StatusBadRequest)
-	}
-	// Unable to read an entire line
-	if strings.Contains(string(out), "! Unable to read an entire line") {
-		log.Warn("Unable to read an entire line")
-		c.Set("App-Error-Code", "UNABLE_TO_READ_LINE")
-		return c.SendStatus(fiber.StatusBadRequest)
-	}
+	outLatex, err := cmd.CombinedOutput()
 	if err != nil {
-		// unexpected latex error
-		log.Error(err)
-		slog.Error("Unexpected latex error", "output", string(out))
-		c.Set("App-Error-Code", "UNEXPECTED_LATEX_ERROR")
-		return c.SendStatus(fiber.StatusInternalServerError)
+		log.Warn(err)
+		slog.Error("LaTeX error", "output", string(outLatex))
+		c.Set("App-Error-Code", "LATEX_ERROR")
+		// scan latex output and pick first line starting with '!'
+		errMsg := ""
+		for line := range strings.SplitSeq(string(outLatex), "\n") {
+			if after, ok := strings.CutPrefix(line, "! "); ok {
+				errMsg = strings.TrimSpace(after)
+				break
+			}
+		}
+		if errMsg != "" {
+			// found explicit '!' line
+			log.Warn("LaTeX error line detected: " + errMsg)
+		} else {
+			// no '!' lines
+			errMsg = "Unexpected LaTeX Error"
+			log.Warn(errMsg)
+		}
+		return c.Status(fiber.StatusBadRequest).SendString(errMsg)
 	}
 	dvi := filepath.Join(tmp, "out.dvi")
 	// check if dvi exists
 	if _, err := os.Stat(dvi); err != nil {
-		// unexpected latex error
 		log.Error(err)
-		slog.Error("Unexpected latex error", "output", string(out))
-		c.Set("App-Error-Code", "UNEXPECTED_LATEX_ERROR")
-		return c.SendStatus(fiber.StatusInternalServerError)
+		slog.Error("DVI file not found", "output", string(outLatex))
+		c.Set("App-Error-Code", "LATEX_ERROR")
+		return c.Status(fiber.StatusInternalServerError).SendString("Unexpected LaTeX Error")
 	}
 	// compile dvi to svg
 	log.Info("Compiling DVI to SVG")
 	cmd = exec.Command("dvisvgm", "--bbox=preview", "--bitmap-format=none", "--font-format=woff2", "--optimize", "--relative", "-o", filepath.Join(tmp, "out.svg"), dvi) // #nosec G204
-	out, err = cmd.CombinedOutput()
+	outDvisvgm, err := cmd.CombinedOutput()
 	if err != nil {
-		// unexpected latex error
 		log.Error(err)
-		slog.Error("Unexpected latex error", "output", string(out))
-		c.Set("App-Error-Code", "UNEXPECTED_LATEX_ERROR")
-		return c.SendStatus(fiber.StatusInternalServerError)
+		slog.Error("dvisvgm error", "output", string(outDvisvgm))
+		c.Set("App-Error-Code", "LATEX_ERROR")
+		return c.Status(fiber.StatusInternalServerError).SendString("Unexpected LaTeX Error")
 	}
 	svg, err := os.ReadFile(filepath.Join(tmp, "out.svg")) // #nosec G304
 	if err != nil {
-		// unexpected latex error
 		log.Error(err)
-		slog.Error("Unexpected latex error", "output", string(out))
-		c.Set("App-Error-Code", "UNEXPECTED_LATEX_ERROR")
-		return c.SendStatus(fiber.StatusInternalServerError)
+		slog.Error("SVG file not found", "output", string(outDvisvgm))
+		c.Set("App-Error-Code", "LATEX_ERROR")
+		return c.Status(fiber.StatusInternalServerError).SendString("Unexpected LaTeX Error")
 	}
 	// success
 	log.Info("SVG generated successfully")
