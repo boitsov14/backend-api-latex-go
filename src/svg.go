@@ -15,10 +15,6 @@ func svg(c *fiber.Ctx) error {
 	log.Info("Request received: /svg")
 	// get latex from body
 	s := string(c.Body())
-	// check if empty
-	if strings.TrimSpace(s) == "" {
-		return c.SendStatus(fiber.StatusBadRequest)
-	}
 	// tmp directory
 	tmp, err := os.MkdirTemp(".", "svg-")
 	if err != nil {
@@ -53,24 +49,14 @@ func svg(c *fiber.Ctx) error {
 				break
 			}
 		}
-		if errMsg != "" {
-			// found explicit '!' line
-			log.Warn("LaTeX error line detected: " + errMsg)
-		} else {
+		if errMsg == "" {
 			// no '!' lines
 			errMsg = "Unexpected LaTeX Error"
-			log.Warn(errMsg)
 		}
+		log.Warn(errMsg)
 		return c.Status(fiber.StatusBadRequest).SendString(errMsg)
 	}
 	dvi := filepath.Join(tmp, "out.dvi")
-	// check if dvi exists
-	if _, err := os.Stat(dvi); err != nil {
-		log.Error(err)
-		slog.Error("DVI file not found", "output", string(outLatex))
-		c.Set("App-Error-Code", "LATEX_ERROR")
-		return c.Status(fiber.StatusInternalServerError).SendString("Unexpected LaTeX Error")
-	}
 	// compile dvi to svg
 	log.Info("Compiling DVI to SVG")
 	cmd = exec.Command("dvisvgm", "--bbox=preview", "--bitmap-format=none", "--font-format=woff2", "--optimize", "--relative", "-o", filepath.Join(tmp, "out.svg"), dvi) // #nosec G204
@@ -79,14 +65,12 @@ func svg(c *fiber.Ctx) error {
 		log.Error(err)
 		slog.Error("dvisvgm error", "output", string(outDvisvgm))
 		c.Set("App-Error-Code", "LATEX_ERROR")
-		return c.Status(fiber.StatusInternalServerError).SendString("Unexpected LaTeX Error")
+		return c.Status(fiber.StatusBadRequest).SendString("Unexpected LaTeX Error")
 	}
 	svg, err := os.ReadFile(filepath.Join(tmp, "out.svg")) // #nosec G304
 	if err != nil {
 		log.Error(err)
-		slog.Error("SVG file not found", "output", string(outDvisvgm))
-		c.Set("App-Error-Code", "LATEX_ERROR")
-		return c.Status(fiber.StatusInternalServerError).SendString("Unexpected LaTeX Error")
+		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 	// success
 	log.Info("SVG generated successfully")
