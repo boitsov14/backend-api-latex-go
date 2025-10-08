@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -72,6 +73,8 @@ func svg(c *fiber.Ctx) error {
 		log.Error(err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
+	// inject background style white to svg
+	svg = bytes.Replace(svg, []byte("<svg "), []byte(`<svg style="background-color:white" `), 1)
 	// success
 	log.Info("SVG generated successfully")
 	// set Content-Type to image/svg+xml
