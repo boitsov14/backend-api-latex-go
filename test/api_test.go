@@ -1,6 +1,7 @@
 package api_test
 
 import (
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,9 +15,7 @@ const (
 	// test directories and endpoints.
 	inputSuccessDir = "in/success"
 	inputFailDir    = "in/fail"
-	outputSVGDir    = "out/svg"
-	outputPNGDir    = "out/png"
-	outputPDFDir    = "out/pdf"
+	outputDir       = "out"
 	urlSVG          = "http://localhost:3001/svg"
 	urlPNG          = "http://localhost:3001/png"
 	urlPDF          = "http://localhost:3001/pdf"
@@ -24,19 +23,93 @@ const (
 
 func TestSuccess(t *testing.T) {
 	client := resty.New()
-	files, err := os.ReadDir(inputSuccessDir)
-	require.NoError(t, err)
-	for _, f := range files {
-		subTestName := f.Name()
-		t.Run(subTestName, func(t *testing.T) {
-			tex, err := os.ReadFile(filepath.Join(inputSuccessDir, f.Name()))
+	// walk recursively under inputSuccessDir and pick .tex files
+	err := filepath.WalkDir(inputSuccessDir, func(path string, d fs.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		if d.IsDir() {
+			return nil
+		}
+		if filepath.Ext(d.Name()) != ".tex" {
+			return nil
+		}
+
+		// get relative path
+		inRel, err := filepath.Rel(inputSuccessDir, path)
+		if err != nil {
+			return err
+		}
+
+		t.Run(filepath.ToSlash(inRel), func(t *testing.T) {
+			// run sub tests in parallel
+			t.Parallel()
+
+			// read tex file
+			tex, err := os.ReadFile(path) // #nosec G304
 			require.NoError(t, err)
+
+			// post to /svg endpoint
 			r, err := client.R().SetBody(tex).Post(urlSVG)
 			require.NoError(t, err)
+			if r.StatusCode() != 200 {
+				// print response body for debugging
+				t.Log("Response body:", string(r.Body()))
+			}
+			// expect 200 OK
 			require.Equal(t, 200, r.StatusCode())
-			svgPath := filepath.Join(outputSVGDir, strings.TrimSuffix(f.Name(), ".tex")+".svg")
+
+			// mirror input folders
+			outRel := strings.TrimSuffix(inRel, ".tex") + ".svg"
+			svgPath := filepath.Join(outputDir, outRel)
+			require.NoError(t, os.MkdirAll(filepath.Dir(svgPath), 0600))
 			require.NoError(t, os.WriteFile(svgPath, r.Body(), 0600))
-			println("Success")
 		})
-	}
+
+		return nil
+	})
+	require.NoError(t, err)
+}
+
+func TestFail(t *testing.T) {
+	client := resty.New()
+	// walk recursively under inputFailDir and pick .tex files
+	err := filepath.WalkDir(inputFailDir, func(path string, d fs.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		if d.IsDir() {
+			return nil
+		}
+		if filepath.Ext(d.Name()) != ".tex" {
+			return nil
+		}
+
+		// get relative path
+		inRel, err := filepath.Rel(inputFailDir, path)
+		if err != nil {
+			return err
+		}
+
+		t.Run(filepath.ToSlash(inRel), func(t *testing.T) {
+			// run sub tests in parallel
+			t.Parallel()
+
+			// read tex file
+			tex, err := os.ReadFile(path) // #nosec G304
+			require.NoError(t, err)
+
+			// post to /svg endpoint
+			r, err := client.R().SetBody(tex).Post(urlSVG)
+			require.NoError(t, err)
+			// log response body for debugging
+			t.Log("Response body:", string(r.Body()))
+			// expect 400 Bad Request with LATEX_ERROR
+			require.Equal(t, 400, r.StatusCode())
+			require.Equal(t, "LATEX_ERROR", r.Header().Get("App-Error-Code"))
+		})
+
+		return nil
+	})
+	require.NoError(t, err)
 }

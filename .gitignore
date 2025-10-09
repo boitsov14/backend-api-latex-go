@@ -1,4 +1,6 @@
 # output
-/test/out/svg
-/test/out/png
-/test/out/pdf
+*.svg
+*.png
+*.pdf
+# todo
+*.tex
