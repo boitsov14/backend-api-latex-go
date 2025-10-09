@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/stretchr/testify/require"
@@ -22,7 +23,10 @@ const (
 )
 
 func TestSuccess(t *testing.T) {
+	// run tests in parallel
+	// t.Parallel()
 	client := resty.New()
+	client.SetTimeout(10 * time.Minute)
 	// walk recursively under inputSuccessDir and pick .tex files
 	err := filepath.WalkDir(inputSuccessDir, func(path string, d fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
@@ -43,7 +47,7 @@ func TestSuccess(t *testing.T) {
 
 		t.Run(filepath.ToSlash(inRel), func(t *testing.T) {
 			// run sub tests in parallel
-			t.Parallel()
+			// t.Parallel()
 
 			// read tex file
 			tex, err := os.ReadFile(path) // #nosec G304
@@ -72,6 +76,8 @@ func TestSuccess(t *testing.T) {
 }
 
 func TestFail(t *testing.T) {
+	// run tests in parallel
+	// t.Parallel()
 	client := resty.New()
 	// walk recursively under inputFailDir and pick .tex files
 	err := filepath.WalkDir(inputFailDir, func(path string, d fs.DirEntry, walkErr error) error {
@@ -93,7 +99,7 @@ func TestFail(t *testing.T) {
 
 		t.Run(filepath.ToSlash(inRel), func(t *testing.T) {
 			// run sub tests in parallel
-			t.Parallel()
+			// t.Parallel()
 
 			// read tex file
 			tex, err := os.ReadFile(path) // #nosec G304

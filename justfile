@@ -63,8 +63,9 @@ run:
 
 # Run tests
 # -v: verbose
+# -count=1: disable test cache
 test:
-    go test ./test -v
+    go test -count=1 ./test -v
 
 ###################################
 # Dependencies
@@ -88,15 +89,7 @@ install package:
 
 # Build binary for Linux
 build:
-    GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -trimpath -o bin/main
-
-# Copy binary from Rust project
-copy:
-    # rm -rf ./bin/*
-    -cp "$RUST_PROJECT_PATH/target/release/theorem-prover-rs.exe" "./bin/prover-windows.exe"
-    -cp "$RUST_PROJECT_PATH/target/trace/theorem-prover-rs.exe" "./bin/prover-trace-windows.exe"
-    -cp "$RUST_PROJECT_PATH/target/x86_64-unknown-linux-gnu/release/theorem-prover-rs" "./bin/prover"
-    -cp "$RUST_PROJECT_PATH/target/x86_64-unknown-linux-gnu/trace/theorem-prover-rs" "./bin/prover-trace"
+    GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -trimpath -o bin/main ./src
 
 ###################################
 # Docker
@@ -104,28 +97,28 @@ copy:
 
 # Build Docker image
 docker:
-    docker build -t prover .
+    docker build -t latex .
 
 # Stop and remove Docker container
 stop:
-    docker stop prover || true
-    docker rm prover || true
+    docker stop latex || true
+    docker rm latex || true
 
 # Run Docker container
 container:
     just stop
-    docker run --env-file .env -p 3000:3000 --name prover prover
+    docker run -p 3001:3001 --name latex latex
 
 # Run all steps
 all:
-    just fmt
     just lint
     just update
     just build
-    just copy
     just docker
     just container
 
 ###################################
 # Deploy
 ###################################
+
+# Deploy minimal-prooftree-latex
