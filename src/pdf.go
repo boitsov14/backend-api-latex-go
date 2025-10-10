@@ -1,23 +1,23 @@
 package main
 
 import (
-	"bytes"
 	"log/slog"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 )
 
-func svg(c *fiber.Ctx) error {
-	log.Info("Request received: /svg")
+func pdf(c *fiber.Ctx) error {
+	log.Info("Request received: /pdf")
 	// get latex from body
 	s := string(c.Body())
 	// tmp directory
-	tmp, err := os.MkdirTemp(".", "svg-")
+	tmp, err := os.MkdirTemp(".", "pdf-")
 	if err != nil {
 		log.Error(err)
 		return c.SendStatus(fiber.StatusInternalServerError)
@@ -34,9 +34,9 @@ func svg(c *fiber.Ctx) error {
 		log.Error(err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
-	// compile tex to dvi
-	log.Info("Compiling LaTeX to DVI")
-	cmd := exec.Command("latex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex)) // #nosec G204
+	// compile tex to pdf
+	log.Info("Generating PDF")
+	cmd := exec.Command("pdflatex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex)) // #nosec G204
 	outLatex, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Warn(err)
@@ -57,28 +57,31 @@ func svg(c *fiber.Ctx) error {
 		log.Warn(errMsg)
 		return c.Status(fiber.StatusBadRequest).SendString(errMsg)
 	}
-	dvi := filepath.Join(tmp, "out.dvi")
-	// compile dvi to svg
-	log.Info("Compiling DVI to SVG")
-	cmd = exec.Command("dvisvgm", "--bbox=preview", "--bitmap-format=none", "--font-format=woff2", "--optimize", "--relative", "-o", filepath.Join(tmp, "out.svg"), dvi) // #nosec G204
-	outDvisvgm, err := cmd.CombinedOutput()
+	pdf := filepath.Join(tmp, "out.pdf")
+	// compress pdf using ghostscript
+	log.Info("Compressing PDF")
+	gs := "gs"
+	if runtime.GOOS == "windows" {
+		gs = "gswin64c"
+	}
+	pdfComp := filepath.Join(tmp, "out-comp.pdf")
+	cmd = exec.Command(gs, "-dBATCH", "-dCompatibilityLevel=1.5", "-dNOPAUSE", "-sDEVICE=pdfwrite", "-o", filepath.ToSlash(pdfComp), filepath.ToSlash(pdf)) // #nosec G204
+	outGS, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Error(err)
-		slog.Error("dvisvgm error", "output", string(outDvisvgm))
+		slog.Error("ghostscript error", "output", string(outGS))
 		c.Set("App-Error-Code", "LATEX_ERROR")
 		return c.Status(fiber.StatusBadRequest).SendString("Unexpected LaTeX Error")
 	}
-	// read svg
-	b, err := os.ReadFile(filepath.Join(tmp, "out.svg")) // #nosec G304
+	// read pdf
+	b, err := os.ReadFile(pdfComp) // #nosec G304
 	if err != nil {
 		log.Error(err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
-	// inject background style white to svg
-	b = bytes.Replace(b, []byte("<svg "), []byte(`<svg style="background-color:white" `), 1)
 	// success
-	log.Info("SVG generated successfully")
-	// set Content-Type to image/svg+xml
-	c.Type("svg")
+	log.Info("PDF generated successfully")
+	// set Content-Type to application/pdf
+	c.Type("pdf")
 	return c.Send(b)
 }

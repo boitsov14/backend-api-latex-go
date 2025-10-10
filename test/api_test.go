@@ -45,7 +45,7 @@ func TestSuccess(t *testing.T) {
 			return err
 		}
 
-		t.Run(filepath.ToSlash(inRel), func(t *testing.T) {
+		t.Run(filepath.ToSlash(inRel)+": svg", func(t *testing.T) {
 			// run sub tests in parallel
 			// t.Parallel()
 
@@ -68,6 +68,56 @@ func TestSuccess(t *testing.T) {
 			svgPath := filepath.Join(outputDir, outRel)
 			require.NoError(t, os.MkdirAll(filepath.Dir(svgPath), 0600))
 			require.NoError(t, os.WriteFile(svgPath, r.Body(), 0600))
+		})
+
+		t.Run(filepath.ToSlash(inRel)+": png", func(t *testing.T) {
+			// run sub tests in parallel
+			// t.Parallel()
+
+			// read tex file
+			tex, err := os.ReadFile(path) // #nosec G304
+			require.NoError(t, err)
+
+			// post to /png endpoint
+			r, err := client.R().SetBody(tex).Post(urlPNG)
+			require.NoError(t, err)
+			if r.StatusCode() != 200 {
+				// print response body for debugging
+				t.Log("Response body:", string(r.Body()))
+			}
+			// expect 200 OK
+			require.Equal(t, 200, r.StatusCode())
+
+			// mirror input folders
+			outRel := strings.TrimSuffix(inRel, ".tex") + ".png"
+			pngPath := filepath.Join(outputDir, outRel)
+			require.NoError(t, os.MkdirAll(filepath.Dir(pngPath), 0600))
+			require.NoError(t, os.WriteFile(pngPath, r.Body(), 0600))
+		})
+
+		t.Run(filepath.ToSlash(inRel)+": pdf", func(t *testing.T) {
+			// run sub tests in parallel
+			// t.Parallel()
+
+			// read tex file
+			tex, err := os.ReadFile(path) // #nosec G304
+			require.NoError(t, err)
+
+			// post to /pdf endpoint
+			r, err := client.R().SetBody(tex).Post(urlPDF)
+			require.NoError(t, err)
+			if r.StatusCode() != 200 {
+				// print response body for debugging
+				t.Log("Response body:", string(r.Body()))
+			}
+			// expect 200 OK
+			require.Equal(t, 200, r.StatusCode())
+
+			// mirror input folders
+			outRel := strings.TrimSuffix(inRel, ".tex") + ".pdf"
+			pdfPath := filepath.Join(outputDir, outRel)
+			require.NoError(t, os.MkdirAll(filepath.Dir(pdfPath), 0600))
+			require.NoError(t, os.WriteFile(pdfPath, r.Body(), 0600))
 		})
 
 		return nil

@@ -33,6 +33,8 @@ func main() {
 
 	// endpoints
 	app.Post("/svg", svg)
+	app.Post("/pdf", pdf)
+	app.Post("/png", png)
 
 	// init port
 	port := os.Getenv("PORT")
