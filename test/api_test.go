@@ -163,6 +163,8 @@ func TestFail(t *testing.T) {
 			// expect 400 Bad Request with LATEX_ERROR
 			require.Equal(t, 400, r.StatusCode())
 			require.Equal(t, "LATEX_ERROR", r.Header().Get("App-Error-Code"))
+			// assert response body does not contain "Unexpected"
+			require.NotContains(t, string(r.Body()), "Unexpected")
 		})
 
 		return nil
