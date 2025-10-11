@@ -41,7 +41,7 @@ func png(c *fiber.Ctx) error {
 	}
 	// compile tex to pdf
 	log.Info("Generating PDF")
-	cmd := exec.Command("pdflatex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex)) // #nosec G204
+	cmd := exec.Command("pdflatex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex))
 	outLatex, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Warn(err)
@@ -73,7 +73,7 @@ func png(c *fiber.Ctx) error {
 	dpis := []int{600, 300, 200, 150, 100, 72, 16}
 	for _, dpi := range dpis {
 		// run ghostscript
-		cmd = exec.Command(gs, "-dBATCH", "-dNOPAUSE", "-r"+strconv.Itoa(dpi), "-sDEVICE=pngmono", "-o", filepath.ToSlash(png), filepath.ToSlash(pdf)) // #nosec G204
+		cmd = exec.Command(gs, "-dBATCH", "-dNOPAUSE", "-r"+strconv.Itoa(dpi), "-sDEVICE=pngmono", "-o", filepath.ToSlash(png), filepath.ToSlash(pdf))
 		outGS, err := cmd.CombinedOutput()
 		if err != nil {
 			log.Error(err)
@@ -101,7 +101,7 @@ func png(c *fiber.Ctx) error {
 		log.Info("Generated PNG: dpi=", dpi, ", width=", cfg.Width, ", height=", cfg.Height)
 		if cfg.Width <= pngMaxDimension && cfg.Height <= pngMaxDimension {
 			// read png
-			b, err := os.ReadFile(png) // #nosec G304
+			b, err := os.ReadFile(png)
 			if err != nil {
 				log.Error(err)
 				return c.SendStatus(fiber.StatusInternalServerError)
@@ -114,7 +114,7 @@ func png(c *fiber.Ctx) error {
 	}
 	log.Warn("PNG too large")
 	// read png
-	b, err := os.ReadFile(png) // #nosec G304
+	b, err := os.ReadFile(png)
 	if err != nil {
 		log.Error(err)
 		return c.SendStatus(fiber.StatusInternalServerError)

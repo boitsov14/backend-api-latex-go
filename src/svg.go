@@ -36,7 +36,7 @@ func svg(c *fiber.Ctx) error {
 	}
 	// compile tex to dvi
 	log.Info("Compiling LaTeX to DVI")
-	cmd := exec.Command("latex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex)) // #nosec G204
+	cmd := exec.Command("latex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex))
 	outLatex, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Warn(err)
@@ -60,7 +60,7 @@ func svg(c *fiber.Ctx) error {
 	dvi := filepath.Join(tmp, "out.dvi")
 	// compile dvi to svg
 	log.Info("Compiling DVI to SVG")
-	cmd = exec.Command("dvisvgm", "--bbox=preview", "--bitmap-format=none", "--font-format=woff2", "--optimize", "--relative", "-o", filepath.Join(tmp, "out.svg"), dvi) // #nosec G204
+	cmd = exec.Command("dvisvgm", "--bbox=preview", "--bitmap-format=none", "--font-format=woff2", "--optimize", "--relative", "-o", filepath.Join(tmp, "out.svg"), dvi)
 	outDvisvgm, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Error(err)
@@ -69,7 +69,7 @@ func svg(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("Unexpected LaTeX Error")
 	}
 	// read svg
-	b, err := os.ReadFile(filepath.Join(tmp, "out.svg")) // #nosec G304
+	b, err := os.ReadFile(filepath.Join(tmp, "out.svg"))
 	if err != nil {
 		log.Error(err)
 		return c.SendStatus(fiber.StatusInternalServerError)

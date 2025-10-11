@@ -50,7 +50,7 @@ func TestSuccess(t *testing.T) {
 			// t.Parallel()
 
 			// read tex file
-			tex, err := os.ReadFile(path) // #nosec G304
+			tex, err := os.ReadFile(path)
 			require.NoError(t, err)
 
 			// post to /svg endpoint
@@ -75,7 +75,7 @@ func TestSuccess(t *testing.T) {
 			// t.Parallel()
 
 			// read tex file
-			tex, err := os.ReadFile(path) // #nosec G304
+			tex, err := os.ReadFile(path)
 			require.NoError(t, err)
 
 			// post to /png endpoint
@@ -100,7 +100,7 @@ func TestSuccess(t *testing.T) {
 			// t.Parallel()
 
 			// read tex file
-			tex, err := os.ReadFile(path) // #nosec G304
+			tex, err := os.ReadFile(path)
 			require.NoError(t, err)
 
 			// post to /pdf endpoint
@@ -152,7 +152,7 @@ func TestFail(t *testing.T) {
 			// t.Parallel()
 
 			// read tex file
-			tex, err := os.ReadFile(path) // #nosec G304
+			tex, err := os.ReadFile(path)
 			require.NoError(t, err)
 
 			// post to /svg endpoint

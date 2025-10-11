@@ -1,4 +1,4 @@
-FROM alpine:latest AS installer
+FROM alpine AS installer
 RUN apk --no-cache add perl tar wget
 WORKDIR /install-tl-unx
 RUN wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz

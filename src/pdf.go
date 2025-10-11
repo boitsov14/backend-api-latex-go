@@ -36,7 +36,7 @@ func pdf(c *fiber.Ctx) error {
 	}
 	// compile tex to pdf
 	log.Info("Generating PDF")
-	cmd := exec.Command("pdflatex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex)) // #nosec G204
+	cmd := exec.Command("pdflatex", "-halt-on-error", "-interaction=nonstopmode", "-output-directory", tmp, filepath.ToSlash(tex))
 	outLatex, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Warn(err)
@@ -65,7 +65,7 @@ func pdf(c *fiber.Ctx) error {
 		gs = "gswin64c"
 	}
 	pdfComp := filepath.Join(tmp, "out-comp.pdf")
-	cmd = exec.Command(gs, "-dBATCH", "-dCompatibilityLevel=1.5", "-dNOPAUSE", "-sDEVICE=pdfwrite", "-o", filepath.ToSlash(pdfComp), filepath.ToSlash(pdf)) // #nosec G204
+	cmd = exec.Command(gs, "-dBATCH", "-dCompatibilityLevel=1.5", "-dNOPAUSE", "-sDEVICE=pdfwrite", "-o", filepath.ToSlash(pdfComp), filepath.ToSlash(pdf))
 	outGS, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Error(err)
@@ -74,7 +74,7 @@ func pdf(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("Unexpected LaTeX Error")
 	}
 	// read pdf
-	b, err := os.ReadFile(pdfComp) // #nosec G304
+	b, err := os.ReadFile(pdfComp)
 	if err != nil {
 		log.Error(err)
 		return c.SendStatus(fiber.StatusInternalServerError)
