@@ -25,10 +25,11 @@ just-fmt:
 update-go:
     go version
     winget upgrade GoLang.Go || true
+    go version
 
 # Update Go version in go.mod
 update-mod:
-    go mod edit -go=1.25.1
+    go mod edit -go=1.25.2
 
 # Update dependencies
 update:
