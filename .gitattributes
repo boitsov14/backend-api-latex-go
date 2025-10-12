@@ -1,2 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# Mark tex files as linguist-generated to exclude them from language stats
+*.tex linguist-generated=true
