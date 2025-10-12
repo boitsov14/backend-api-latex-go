@@ -1,0 +1,8 @@
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage{ebproof,lplfitch}
+\begin{document}
+\begin{prooftree}
+\infer{0}[\scriptsize Axiom]{P &\vdash P}
+\infer{1}[\scriptsize $\lif$: Right]{ &\vdash P \lif P}
+\end{prooftree}
+\end{document}

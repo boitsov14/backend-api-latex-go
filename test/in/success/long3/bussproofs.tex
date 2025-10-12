@@ -1,0 +1,36 @@
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage{bussproofs,lplfitch}
+\begin{document}
+\begin{prooftree}
+\renewcommand{\fCenter}{\ \mbox{$\vdash$}\ }
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$o11, o41, o31, o21 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o32, o31, o22, o12$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$o11, o41, o31, o21 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o41, o32, o22, o12$
+\RightLabel{\scriptsize $\land$: Right}
+\BinaryInf$o11, o31, o21, o41 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o31 \land o41, o12, o32, o22$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$o12, o31, o21, o41 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o31 \land o41, o12 \land o22, o12 \land o32, o22 \land o32, o12, o32, o22$
+\RightLabel{\scriptsize $\lor$: Left}
+\BinaryInf$o11 \lor o12, o31, o21, o41 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o31 \land o41, o12 \land o22, o12 \land o32, o22 \land o32, o12, o32, o22$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$o11 \lor o12, o31, o22, o41 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o31 \land o41, o12 \land o22, o12 \land o32, o22 \land o32, o12, o32, o22$
+\RightLabel{\scriptsize $\lor$: Left}
+\BinaryInf$o11 \lor o12, o21 \lor o22, o31, o41 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o31 \land o41, o12 \land o22, o12 \land o32, o22 \land o32, o12, o32, o22$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$o11 \lor o12, o21 \lor o22, o32, o41 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o31 \land o41, o12 \land o22, o12 \land o32, o22 \land o32, o12, o32, o22$
+\RightLabel{\scriptsize $\lor$: Left}
+\BinaryInf$o11 \lor o12, o21 \lor o22, o31 \lor o32, o41 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o31 \land o41, o12 \land o22, o12 \land o32, o22 \land o32, o12, o32, o22$
+\RightLabel{\scriptsize $\land$: Left}
+\UnaryInf$(o11 \lor o12) \land (o21 \lor o22) \land (o31 \lor o32) \land o41 \fCenter o11 \land o21, o11 \land o31, o11 \land o41, o21 \land o31, o21 \land o41, o31 \land o41, o12 \land o22, o12 \land o32, o22 \land o32, o32, o12, o22$
+\RightLabel{\scriptsize $\lor$: Right}
+\UnaryInf$(o11 \lor o12) \land (o21 \lor o22) \land (o31 \lor o32) \land o41 \fCenter (o11 \land o21) \lor (o11 \land o31) \lor (o11 \land o41) \lor (o21 \land o31) \lor (o21 \land o41) \lor (o31 \land o41) \lor (o12 \land o22) \lor (o12 \land o32) \lor o12 \lor (o22 \land o32) \lor o22 \lor o32$
+\RightLabel{\scriptsize $\lif$: Right}
+\UnaryInf$ \fCenter ((o11 \lor o12) \land (o21 \lor o22) \land (o31 \lor o32) \land o41) \lif ((o11 \land o21) \lor (o11 \land o31) \lor (o11 \land o41) \lor (o21 \land o31) \lor (o21 \land o41) \lor (o31 \land o41) \lor (o12 \land o22) \lor (o12 \land o32) \lor o12 \lor (o22 \land o32) \lor o22 \lor o32)$
+\end{prooftree}
+\end{document}

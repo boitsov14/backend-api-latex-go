@@ -1,0 +1,325 @@
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage{bussproofs,lplfitch}
+\begin{document}
+\begin{prooftree}
+\renewcommand{\fCenter}{\ \mbox{$\vdash$}\ }
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3, p2 \fCenter p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4, p3, p2 \fCenter p2, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p1 \liff p2, p4, p3, p2 \fCenter p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4, p3, p2 \fCenter p1 \liff p2, p3, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$(p1 \liff p2) \liff p3, p4, p3, p2 \fCenter p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4, p3, p2 \fCenter (p1 \liff p2) \liff p3, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p4, p3, p2 \fCenter p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3, p2 \fCenter p2$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3 \fCenter p2, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p1 \liff p2, p1, p4, p3 \fCenter p2$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3 \fCenter p1 \liff p2, p3, p2$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$(p1 \liff p2) \liff p3, p1, p4, p3 \fCenter p2$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3 \fCenter (p1 \liff p2) \liff p3, p2, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p1, p4, p3 \fCenter p2$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p3, p4 \fCenter p2 \liff p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1 \liff p2, p1, p4, p3, p2 \fCenter p3$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p2 \fCenter p3, p2$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p2 \fCenter p3, p1$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p1, p4, p2 \fCenter p1 \liff p2, p3$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$(p1 \liff p2) \liff p3, p1, p4, p2 \fCenter p3$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p2 \fCenter (p1 \liff p2) \liff p3, p3, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p1, p4, p2 \fCenter p3$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1 \liff p2, p4, p3 \fCenter p3, p2, p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4 \fCenter p3, p2, p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4, p2 \fCenter p3, p2, p1$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p4 \fCenter p1 \liff p2, p3, p2, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$(p1 \liff p2) \liff p3, p4 \fCenter p3, p2, p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4 \fCenter (p1 \liff p2) \liff p3, p3, p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p4 \fCenter p3, p2, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p2 \liff p1, p4 \fCenter p3$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p4 \fCenter p3 \liff (p2 \liff p1)$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$(p1 \liff p2) \liff p3, p1, p4, p3, p2 \fCenter p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1 \liff p2, p1, p3, p2 \fCenter p3, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p3, p2 \fCenter p2, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p3, p2 \fCenter p1, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p1, p3, p2 \fCenter p1 \liff p2, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p1, p3, p2 \fCenter (p1 \liff p2) \liff p3, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p1, p3, p2 \fCenter p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$(p1 \liff p2) \liff p3, p3, p4 \fCenter p2, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1 \liff p2, p3 \fCenter p3, p2, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p3 \fCenter p2, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p3, p2 \fCenter p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p3 \fCenter p1 \liff p2, p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p3 \fCenter (p1 \liff p2) \liff p3, p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p3 \fCenter p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p2 \liff p1, p3 \fCenter p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$(p1 \liff p2) \liff p3, p4, p2 \fCenter p3, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p2 \fCenter p3, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p2 \fCenter p3, p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p1 \liff p2, p2 \fCenter p3, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p3, p2 \fCenter p1 \liff p2, p3, p1, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p2 \fCenter (p1 \liff p2) \liff p3, p3, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p2 \fCenter p3, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$(p1 \liff p2) \liff p3, p1, p4 \fCenter p3, p2, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p2 \fCenter p3, p2, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1 \fCenter p3, p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p1 \liff p2, p1 \fCenter p3, p2, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p3 \fCenter p1 \liff p2, p3, p2, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p1 \fCenter (p1 \liff p2) \liff p3, p3, p2, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p1 \fCenter p3, p2, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4 \fCenter p2 \liff p1, p3, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4, p3 \liff (p2 \liff p1) \fCenter p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$((p1 \liff p2) \liff p3) \liff p4 \fCenter p4 \liff (p3 \liff (p2 \liff p1))$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p3 \liff (p2 \liff p1), p1, p4, p3, p2 \fCenter p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p3, p2 \fCenter p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p3, p2 \fCenter p2, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p1, p3, p2 \fCenter p2 \liff p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p2 \liff p1, p1, p3, p2 \fCenter p3, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p1, p3, p2 \fCenter p3 \liff (p2 \liff p1), p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p1, p3, p2 \fCenter p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p3 \liff (p2 \liff p1), p3, p4 \fCenter p2, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p3, p2 \fCenter p2, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p3 \fCenter p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p3 \fCenter p2 \liff p1, p2, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p2 \liff p1, p3 \fCenter p3, p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p3 \fCenter p3 \liff (p2 \liff p1), p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p3 \fCenter p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p1 \liff p2, p3 \fCenter p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p3 \liff (p2 \liff p1), p1, p4 \fCenter p3, p2, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p3 \fCenter p2 \liff p1, p3, p2, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p2 \fCenter p3, p2, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1 \fCenter p3, p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p2 \liff p1, p1 \fCenter p3, p2, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p1 \fCenter p3 \liff (p2 \liff p1), p3, p2, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p1 \fCenter p3, p2, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p3 \liff (p2 \liff p1), p4, p2 \fCenter p3, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p3, p2 \fCenter p2 \liff p1, p3, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p2 \fCenter p3, p1, p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p2 \fCenter p3, p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p2 \liff p1, p2 \fCenter p3, p1, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p2 \fCenter p3 \liff (p2 \liff p1), p3, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p2 \fCenter p3, p1, p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)) \fCenter p1 \liff p2, p3, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), (p1 \liff p2) \liff p3 \fCenter p4$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p2 \liff p1, p1, p4, p3, p2 \fCenter p3$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p2 \fCenter p3, p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p2 \fCenter p3, p2$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p1, p4, p2 \fCenter p2 \liff p1, p3$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p3 \liff (p2 \liff p1), p1, p4, p2 \fCenter p3$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p2 \fCenter p3 \liff (p2 \liff p1), p3, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p1, p4, p2 \fCenter p3$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p2 \liff p1, p4, p3 \fCenter p3, p2, p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4, p2 \fCenter p3, p2, p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4 \fCenter p3, p2, p1$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p4 \fCenter p2 \liff p1, p3, p2, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p3 \liff (p2 \liff p1), p4 \fCenter p3, p2, p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4 \fCenter p3 \liff (p2 \liff p1), p3, p2, p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p4 \fCenter p3, p2, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p1 \liff p2, p4 \fCenter p3$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3, p2 \fCenter p2$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3 \fCenter p2, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p2 \liff p1, p1, p4, p3 \fCenter p2$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3 \fCenter p2 \liff p1, p3, p2$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p3 \liff (p2 \liff p1), p1, p4, p3 \fCenter p2$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3 \fCenter p3 \liff (p2 \liff p1), p2, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p1, p4, p3 \fCenter p2$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p1, p4, p3, p2 \fCenter p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4, p3, p2 \fCenter p2, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p2 \liff p1, p4, p3, p2 \fCenter p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4, p3, p2 \fCenter p2 \liff p1, p3, p1$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p3 \liff (p2 \liff p1), p4, p3, p2 \fCenter p1$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p4, p3, p2 \fCenter p3 \liff (p2 \liff p1), p1, p4$
+\RightLabel{\scriptsize $\liff$: Left}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p4, p3, p2 \fCenter p1$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p3, p4 \fCenter p1 \liff p2$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)), p4 \fCenter (p1 \liff p2) \liff p3$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$p4 \liff (p3 \liff (p2 \liff p1)) \fCenter ((p1 \liff p2) \liff p3) \liff p4$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$ \fCenter (((p1 \liff p2) \liff p3) \liff p4) \liff (p4 \liff (p3 \liff (p2 \liff p1)))$
+\end{prooftree}
+\end{document}

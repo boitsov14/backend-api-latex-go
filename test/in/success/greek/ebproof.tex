@@ -1,0 +1,12 @@
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage{alphabeta,ebproof,lplfitch}
+\begin{document}
+\begin{prooftree}
+\infer{0}[\scriptsize Axiom]{α, Δ, Γ, β &\vdash α}
+\infer{0}[\scriptsize Axiom]{α, Δ, Γ, β &\vdash β}
+\infer{0}[\scriptsize Axiom]{α, Δ, Γ, β &\vdash Γ}
+\infer{0}[\scriptsize Axiom]{α, Δ, Γ, β &\vdash Δ}
+\infer{4}[\scriptsize $\land$: Right]{α, Δ, Γ, β &\vdash α \land β \land Γ \land Δ}
+\infer{1}[\scriptsize $\land$: Left]{α \land β \land Γ \land Δ &\vdash α \land β \land Γ \land Δ}
+\end{prooftree}
+\end{document}

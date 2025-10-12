@@ -1,0 +1,23 @@
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage{alphabeta,bussproofs,lplfitch}
+\begin{document}
+\begin{prooftree}
+\renewcommand{\fCenter}{\ \mbox{$\vdash$}\ }
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$α, Δ, Γ, β \fCenter α$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$α, Δ, Γ, β \fCenter β$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$α, Δ, Γ, β \fCenter Γ$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$α, Δ, Γ, β \fCenter Δ$
+\RightLabel{\scriptsize $\land$: Right}
+\QuaternaryInf$α, Δ, Γ, β \fCenter α \land β \land Γ \land Δ$
+\RightLabel{\scriptsize $\land$: Left}
+\UnaryInf$α \land β \land Γ \land Δ \fCenter α \land β \land Γ \land Δ$
+\end{prooftree}
+\end{document}

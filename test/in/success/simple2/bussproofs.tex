@@ -1,0 +1,57 @@
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage{bussproofs,lplfitch}
+\begin{document}
+\begin{prooftree}
+\renewcommand{\fCenter}{\ \mbox{$\vdash$}\ }
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p \fCenter q, p$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$r, q \fCenter q, p$
+\RightLabel{\scriptsize $\land$: Left}
+\UnaryInf$q \land r \fCenter q, p$
+\RightLabel{\scriptsize $\lor$: Left}
+\BinaryInf$p \lor (q \land r) \fCenter q, p$
+\RightLabel{\scriptsize $\lor$: Right}
+\UnaryInf$p \lor (q \land r) \fCenter p \lor q$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p \fCenter r, p$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$r, q \fCenter r, p$
+\RightLabel{\scriptsize $\land$: Left}
+\UnaryInf$q \land r \fCenter r, p$
+\RightLabel{\scriptsize $\lor$: Left}
+\BinaryInf$p \lor (q \land r) \fCenter r, p$
+\RightLabel{\scriptsize $\lor$: Right}
+\UnaryInf$p \lor (q \land r) \fCenter p \lor r$
+\RightLabel{\scriptsize $\land$: Right}
+\BinaryInf$p \lor (q \land r) \fCenter (p \lor q) \land (p \lor r)$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$p \lor q, p \fCenter q \land r, p$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$r, p \fCenter q \land r, p$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$r, q \fCenter q, p$
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$r, q \fCenter r, p$
+\RightLabel{\scriptsize $\land$: Right}
+\BinaryInf$r, q \fCenter q \land r, p$
+\RightLabel{\scriptsize $\lor$: Left}
+\BinaryInf$p \lor q, r \fCenter q \land r, p$
+\RightLabel{\scriptsize $\lor$: Left}
+\BinaryInf$p \lor q, p \lor r \fCenter q \land r, p$
+\RightLabel{\scriptsize $\land$: Left}
+\UnaryInf$(p \lor q) \land (p \lor r) \fCenter q \land r, p$
+\RightLabel{\scriptsize $\lor$: Right}
+\UnaryInf$(p \lor q) \land (p \lor r) \fCenter p \lor (q \land r)$
+\RightLabel{\scriptsize $\liff$: Right}
+\BinaryInf$ \fCenter (p \lor (q \land r)) \liff ((p \lor q) \land (p \lor r))$
+\end{prooftree}
+\end{document}

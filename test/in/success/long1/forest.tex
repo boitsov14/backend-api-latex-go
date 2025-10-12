@@ -1,0 +1,1181 @@
+% ref: https://tex.stackexchange.com/a/570639
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage[linguistics]{forest}
+\usepackage{array,lplfitch}
+\newcolumntype{C}[1]{>{\centering $}p{#1}<{$}}
+\forestset{
+  declare toks={from}{},
+  declare toks={idx}{},
+  declare toks register={claim},
+  declare boolean={align me}{0},
+  declare dimen={my width}{0pt},
+  declare dimen register={lmeas},
+  declare dimen register={rmeas},
+  lmeas/.pgfmath=width("99."),
+  rmeas/.pgfmath=width("(99)"),
+  proof/.style={
+    for tree={math content},
+    for root=align me,
+    before typesetting nodes={
+      if claim={}{}{
+        replace by/.process={Rw{claim}{[##1,math content,append]}},
+        no edge,
+        before computing xy={l'=2\baselineskip}
+      }
+    },
+    where n children=1{
+      !1.no edge,
+      before computing xy={!1.l'=\baselineskip}
+    }{},
+    for root={align me},
+    where n children>=2{
+      for children={align me}
+    }{},
+    before packing={
+      where align me={
+        tempdima/.max={>{OOw2+d}{max x}{min x}{##1-##2}}{
+          walk and save={temptoksa}{
+            current,
+            until={>O_=!{n children}{1}}{first,typeset node}
+          }
+        },
+        for nodewalk={load=temptoksa}{
+          my width/.register=tempdima,
+          typeset node
+        }
+      }{},
+      for tree={
+        tempcounta=idx,
+        align=p{\foresteregister{lmeas}}C{\foresteoption{my width}}p{\foresteregister{rmeas}},
+        content/.process={
+          OR OSl+tt= ? w w3 {content}{tempcounta}{from}{}{}
+          {(##1)}{##2.\quad & ##1\quad & ##3}
+        },
+        typeset node
+      }
+    },
+    close/.style={
+      label={[xshift=-2.5pt]below:$\times$}
+    }
+  }
+}
+\begin{document}
+\begin{forest}
+  proof,
+  claim=\vdash ((((p1 \liff p2) \liff p3) \liff p4) \liff p5) \liff (p5 \liff (p4 \liff (p3 \liff (p2 \liff p1))))
+  [\lnot (((((p1 \liff p2) \liff p3) \liff p4) \liff p5) \liff (p5 \liff (p4 \liff (p3 \liff (p2 \liff p1))))),idx=1
+    [(((p1 \liff p2) \liff p3) \liff p4) \liff p5,idx=2,from=1
+      [\lnot (p5 \liff (p4 \liff (p3 \liff (p2 \liff p1)))),idx=3,from=1
+        [p5,idx=6,from=3
+          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=7,from=3
+            [p4,idx=10,from=7
+              [\lnot (p3 \liff (p2 \liff p1)),idx=11,from=7
+                [p3,idx=14,from=11
+                  [\lnot (p2 \liff p1),idx=15,from=11
+                    [p2,idx=18,from=15
+                      [\lnot p1,idx=19,from=15
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=22,from=2
+                          [p5,idx=23,from=2
+                            [(p1 \liff p2) \liff p3,idx=26,from=22
+                              [p4,idx=27,from=22
+                                [p1 \liff p2,idx=30,from=26
+                                  [p3,idx=31,from=26
+                                    [p1,idx=34,from=30
+                                      [p2,idx=35,from=30,close]
+                                    ]
+                                    [\lnot p1,idx=36,from=30
+                                      [\lnot p2,idx=37,from=30,close]
+                                    ]
+                                  ]
+                                ]
+                                [\lnot (p1 \liff p2),idx=32,from=26
+                                  [\lnot p3,idx=33,from=26,close]
+                                ]
+                              ]
+                            ]
+                            [\lnot ((p1 \liff p2) \liff p3),idx=28,from=22
+                              [\lnot p4,idx=29,from=22,close]
+                            ]
+                          ]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=24,from=2
+                          [\lnot p5,idx=25,from=2,close]
+                        ]
+                      ]
+                    ]
+                    [p1,idx=20,from=15
+                      [\lnot p2,idx=21,from=15
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=38,from=2
+                          [p5,idx=39,from=2
+                            [(p1 \liff p2) \liff p3,idx=42,from=38
+                              [p4,idx=43,from=38
+                                [p1 \liff p2,idx=46,from=42
+                                  [p3,idx=47,from=42
+                                    [p1,idx=50,from=46
+                                      [p2,idx=51,from=46,close]
+                                    ]
+                                    [\lnot p1,idx=52,from=46
+                                      [\lnot p2,idx=53,from=46,close]
+                                    ]
+                                  ]
+                                ]
+                                [\lnot (p1 \liff p2),idx=48,from=42
+                                  [\lnot p3,idx=49,from=42,close]
+                                ]
+                              ]
+                            ]
+                            [\lnot ((p1 \liff p2) \liff p3),idx=44,from=38
+                              [\lnot p4,idx=45,from=38,close]
+                            ]
+                          ]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=40,from=2
+                          [\lnot p5,idx=41,from=2,close]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+                [p2 \liff p1,idx=16,from=11
+                  [\lnot p3,idx=17,from=11
+                    [p2,idx=54,from=16
+                      [p1,idx=55,from=16
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=58,from=2
+                          [p5,idx=59,from=2
+                            [(p1 \liff p2) \liff p3,idx=62,from=58
+                              [p4,idx=63,from=58
+                                [p1 \liff p2,idx=66,from=62
+                                  [p3,idx=67,from=62,close]
+                                ]
+                                [\lnot (p1 \liff p2),idx=68,from=62
+                                  [\lnot p3,idx=69,from=62
+                                    [p1,idx=70,from=68
+                                      [\lnot p2,idx=71,from=68,close]
+                                    ]
+                                    [p2,idx=72,from=68
+                                      [\lnot p1,idx=73,from=68,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                            [\lnot ((p1 \liff p2) \liff p3),idx=64,from=58
+                              [\lnot p4,idx=65,from=58,close]
+                            ]
+                          ]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=60,from=2
+                          [\lnot p5,idx=61,from=2,close]
+                        ]
+                      ]
+                    ]
+                    [\lnot p2,idx=56,from=16
+                      [\lnot p1,idx=57,from=16
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=74,from=2
+                          [p5,idx=75,from=2
+                            [(p1 \liff p2) \liff p3,idx=78,from=74
+                              [p4,idx=79,from=74
+                                [p1 \liff p2,idx=82,from=78
+                                  [p3,idx=83,from=78,close]
+                                ]
+                                [\lnot (p1 \liff p2),idx=84,from=78
+                                  [\lnot p3,idx=85,from=78
+                                    [p1,idx=86,from=84
+                                      [\lnot p2,idx=87,from=84,close]
+                                    ]
+                                    [p2,idx=88,from=84
+                                      [\lnot p1,idx=89,from=84,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                            [\lnot ((p1 \liff p2) \liff p3),idx=80,from=74
+                              [\lnot p4,idx=81,from=74,close]
+                            ]
+                          ]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=76,from=2
+                          [\lnot p5,idx=77,from=2,close]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+            [p3 \liff (p2 \liff p1),idx=12,from=7
+              [\lnot p4,idx=13,from=7
+                [p3,idx=90,from=12
+                  [p2 \liff p1,idx=91,from=12
+                    [p2,idx=94,from=91
+                      [p1,idx=95,from=91
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=98,from=2
+                          [p5,idx=99,from=2
+                            [(p1 \liff p2) \liff p3,idx=102,from=98
+                              [p4,idx=103,from=98,close]
+                            ]
+                            [\lnot ((p1 \liff p2) \liff p3),idx=104,from=98
+                              [\lnot p4,idx=105,from=98
+                                [p1 \liff p2,idx=106,from=104
+                                  [\lnot p3,idx=107,from=104,close]
+                                ]
+                                [p3,idx=108,from=104
+                                  [\lnot (p1 \liff p2),idx=109,from=104
+                                    [p1,idx=110,from=109
+                                      [\lnot p2,idx=111,from=109,close]
+                                    ]
+                                    [p2,idx=112,from=109
+                                      [\lnot p1,idx=113,from=109,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=100,from=2
+                          [\lnot p5,idx=101,from=2,close]
+                        ]
+                      ]
+                    ]
+                    [\lnot p2,idx=96,from=91
+                      [\lnot p1,idx=97,from=91
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=114,from=2
+                          [p5,idx=115,from=2
+                            [(p1 \liff p2) \liff p3,idx=118,from=114
+                              [p4,idx=119,from=114,close]
+                            ]
+                            [\lnot ((p1 \liff p2) \liff p3),idx=120,from=114
+                              [\lnot p4,idx=121,from=114
+                                [p1 \liff p2,idx=122,from=120
+                                  [\lnot p3,idx=123,from=120,close]
+                                ]
+                                [p3,idx=124,from=120
+                                  [\lnot (p1 \liff p2),idx=125,from=120
+                                    [p1,idx=126,from=125
+                                      [\lnot p2,idx=127,from=125,close]
+                                    ]
+                                    [p2,idx=128,from=125
+                                      [\lnot p1,idx=129,from=125,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=116,from=2
+                          [\lnot p5,idx=117,from=2,close]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+                [\lnot p3,idx=92,from=12
+                  [\lnot (p2 \liff p1),idx=93,from=12
+                    [p2,idx=130,from=93
+                      [\lnot p1,idx=131,from=93
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=134,from=2
+                          [p5,idx=135,from=2
+                            [(p1 \liff p2) \liff p3,idx=138,from=134
+                              [p4,idx=139,from=134,close]
+                            ]
+                            [\lnot ((p1 \liff p2) \liff p3),idx=140,from=134
+                              [\lnot p4,idx=141,from=134
+                                [p1 \liff p2,idx=142,from=140
+                                  [\lnot p3,idx=143,from=140
+                                    [p1,idx=146,from=142
+                                      [p2,idx=147,from=142,close]
+                                    ]
+                                    [\lnot p1,idx=148,from=142
+                                      [\lnot p2,idx=149,from=142,close]
+                                    ]
+                                  ]
+                                ]
+                                [p3,idx=144,from=140
+                                  [\lnot (p1 \liff p2),idx=145,from=140,close]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=136,from=2
+                          [\lnot p5,idx=137,from=2,close]
+                        ]
+                      ]
+                    ]
+                    [p1,idx=132,from=93
+                      [\lnot p2,idx=133,from=93
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=150,from=2
+                          [p5,idx=151,from=2
+                            [(p1 \liff p2) \liff p3,idx=154,from=150
+                              [p4,idx=155,from=150,close]
+                            ]
+                            [\lnot ((p1 \liff p2) \liff p3),idx=156,from=150
+                              [\lnot p4,idx=157,from=150
+                                [p1 \liff p2,idx=158,from=156
+                                  [\lnot p3,idx=159,from=156
+                                    [p1,idx=162,from=158
+                                      [p2,idx=163,from=158,close]
+                                    ]
+                                    [\lnot p1,idx=164,from=158
+                                      [\lnot p2,idx=165,from=158,close]
+                                    ]
+                                  ]
+                                ]
+                                [p3,idx=160,from=156
+                                  [\lnot (p1 \liff p2),idx=161,from=156,close]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=152,from=2
+                          [\lnot p5,idx=153,from=2,close]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+        [p4 \liff (p3 \liff (p2 \liff p1)),idx=8,from=3
+          [\lnot p5,idx=9,from=3
+            [p4,idx=166,from=8
+              [p3 \liff (p2 \liff p1),idx=167,from=8
+                [p3,idx=170,from=167
+                  [p2 \liff p1,idx=171,from=167
+                    [p2,idx=174,from=171
+                      [p1,idx=175,from=171
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=178,from=2
+                          [p5,idx=179,from=2,close]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=180,from=2
+                          [\lnot p5,idx=181,from=2
+                            [(p1 \liff p2) \liff p3,idx=182,from=180
+                              [\lnot p4,idx=183,from=180,close]
+                            ]
+                            [p4,idx=184,from=180
+                              [\lnot ((p1 \liff p2) \liff p3),idx=185,from=180
+                                [p1 \liff p2,idx=186,from=185
+                                  [\lnot p3,idx=187,from=185,close]
+                                ]
+                                [p3,idx=188,from=185
+                                  [\lnot (p1 \liff p2),idx=189,from=185
+                                    [p1,idx=190,from=189
+                                      [\lnot p2,idx=191,from=189,close]
+                                    ]
+                                    [p2,idx=192,from=189
+                                      [\lnot p1,idx=193,from=189,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                    [\lnot p2,idx=176,from=171
+                      [\lnot p1,idx=177,from=171
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=194,from=2
+                          [p5,idx=195,from=2,close]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=196,from=2
+                          [\lnot p5,idx=197,from=2
+                            [(p1 \liff p2) \liff p3,idx=198,from=196
+                              [\lnot p4,idx=199,from=196,close]
+                            ]
+                            [p4,idx=200,from=196
+                              [\lnot ((p1 \liff p2) \liff p3),idx=201,from=196
+                                [p1 \liff p2,idx=202,from=201
+                                  [\lnot p3,idx=203,from=201,close]
+                                ]
+                                [p3,idx=204,from=201
+                                  [\lnot (p1 \liff p2),idx=205,from=201
+                                    [p1,idx=206,from=205
+                                      [\lnot p2,idx=207,from=205,close]
+                                    ]
+                                    [p2,idx=208,from=205
+                                      [\lnot p1,idx=209,from=205,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+                [\lnot p3,idx=172,from=167
+                  [\lnot (p2 \liff p1),idx=173,from=167
+                    [p2,idx=210,from=173
+                      [\lnot p1,idx=211,from=173
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=214,from=2
+                          [p5,idx=215,from=2,close]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=216,from=2
+                          [\lnot p5,idx=217,from=2
+                            [(p1 \liff p2) \liff p3,idx=218,from=216
+                              [\lnot p4,idx=219,from=216,close]
+                            ]
+                            [p4,idx=220,from=216
+                              [\lnot ((p1 \liff p2) \liff p3),idx=221,from=216
+                                [p1 \liff p2,idx=222,from=221
+                                  [\lnot p3,idx=223,from=221
+                                    [p1,idx=226,from=222
+                                      [p2,idx=227,from=222,close]
+                                    ]
+                                    [\lnot p1,idx=228,from=222
+                                      [\lnot p2,idx=229,from=222,close]
+                                    ]
+                                  ]
+                                ]
+                                [p3,idx=224,from=221
+                                  [\lnot (p1 \liff p2),idx=225,from=221,close]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                    [p1,idx=212,from=173
+                      [\lnot p2,idx=213,from=173
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=230,from=2
+                          [p5,idx=231,from=2,close]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=232,from=2
+                          [\lnot p5,idx=233,from=2
+                            [(p1 \liff p2) \liff p3,idx=234,from=232
+                              [\lnot p4,idx=235,from=232,close]
+                            ]
+                            [p4,idx=236,from=232
+                              [\lnot ((p1 \liff p2) \liff p3),idx=237,from=232
+                                [p1 \liff p2,idx=238,from=237
+                                  [\lnot p3,idx=239,from=237
+                                    [p1,idx=242,from=238
+                                      [p2,idx=243,from=238,close]
+                                    ]
+                                    [\lnot p1,idx=244,from=238
+                                      [\lnot p2,idx=245,from=238,close]
+                                    ]
+                                  ]
+                                ]
+                                [p3,idx=240,from=237
+                                  [\lnot (p1 \liff p2),idx=241,from=237,close]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+            [\lnot p4,idx=168,from=8
+              [\lnot (p3 \liff (p2 \liff p1)),idx=169,from=8
+                [p3,idx=246,from=169
+                  [\lnot (p2 \liff p1),idx=247,from=169
+                    [p2,idx=250,from=247
+                      [\lnot p1,idx=251,from=247
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=254,from=2
+                          [p5,idx=255,from=2,close]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=256,from=2
+                          [\lnot p5,idx=257,from=2
+                            [(p1 \liff p2) \liff p3,idx=258,from=256
+                              [\lnot p4,idx=259,from=256
+                                [p1 \liff p2,idx=262,from=258
+                                  [p3,idx=263,from=258
+                                    [p1,idx=266,from=262
+                                      [p2,idx=267,from=262,close]
+                                    ]
+                                    [\lnot p1,idx=268,from=262
+                                      [\lnot p2,idx=269,from=262,close]
+                                    ]
+                                  ]
+                                ]
+                                [\lnot (p1 \liff p2),idx=264,from=258
+                                  [\lnot p3,idx=265,from=258,close]
+                                ]
+                              ]
+                            ]
+                            [p4,idx=260,from=256
+                              [\lnot ((p1 \liff p2) \liff p3),idx=261,from=256,close]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                    [p1,idx=252,from=247
+                      [\lnot p2,idx=253,from=247
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=270,from=2
+                          [p5,idx=271,from=2,close]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=272,from=2
+                          [\lnot p5,idx=273,from=2
+                            [(p1 \liff p2) \liff p3,idx=274,from=272
+                              [\lnot p4,idx=275,from=272
+                                [p1 \liff p2,idx=278,from=274
+                                  [p3,idx=279,from=274
+                                    [p1,idx=282,from=278
+                                      [p2,idx=283,from=278,close]
+                                    ]
+                                    [\lnot p1,idx=284,from=278
+                                      [\lnot p2,idx=285,from=278,close]
+                                    ]
+                                  ]
+                                ]
+                                [\lnot (p1 \liff p2),idx=280,from=274
+                                  [\lnot p3,idx=281,from=274,close]
+                                ]
+                              ]
+                            ]
+                            [p4,idx=276,from=272
+                              [\lnot ((p1 \liff p2) \liff p3),idx=277,from=272,close]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+                [p2 \liff p1,idx=248,from=169
+                  [\lnot p3,idx=249,from=169
+                    [p2,idx=286,from=248
+                      [p1,idx=287,from=248
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=290,from=2
+                          [p5,idx=291,from=2,close]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=292,from=2
+                          [\lnot p5,idx=293,from=2
+                            [(p1 \liff p2) \liff p3,idx=294,from=292
+                              [\lnot p4,idx=295,from=292
+                                [p1 \liff p2,idx=298,from=294
+                                  [p3,idx=299,from=294,close]
+                                ]
+                                [\lnot (p1 \liff p2),idx=300,from=294
+                                  [\lnot p3,idx=301,from=294
+                                    [p1,idx=302,from=300
+                                      [\lnot p2,idx=303,from=300,close]
+                                    ]
+                                    [p2,idx=304,from=300
+                                      [\lnot p1,idx=305,from=300,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                            [p4,idx=296,from=292
+                              [\lnot ((p1 \liff p2) \liff p3),idx=297,from=292,close]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                    [\lnot p2,idx=288,from=248
+                      [\lnot p1,idx=289,from=248
+                        [((p1 \liff p2) \liff p3) \liff p4,idx=306,from=2
+                          [p5,idx=307,from=2,close]
+                        ]
+                        [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=308,from=2
+                          [\lnot p5,idx=309,from=2
+                            [(p1 \liff p2) \liff p3,idx=310,from=308
+                              [\lnot p4,idx=311,from=308
+                                [p1 \liff p2,idx=314,from=310
+                                  [p3,idx=315,from=310,close]
+                                ]
+                                [\lnot (p1 \liff p2),idx=316,from=310
+                                  [\lnot p3,idx=317,from=310
+                                    [p1,idx=318,from=316
+                                      [\lnot p2,idx=319,from=316,close]
+                                    ]
+                                    [p2,idx=320,from=316
+                                      [\lnot p1,idx=321,from=316,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                            [p4,idx=312,from=308
+                              [\lnot ((p1 \liff p2) \liff p3),idx=313,from=308,close]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+    [p5 \liff (p4 \liff (p3 \liff (p2 \liff p1))),idx=4,from=1
+      [\lnot ((((p1 \liff p2) \liff p3) \liff p4) \liff p5),idx=5,from=1
+        [((p1 \liff p2) \liff p3) \liff p4,idx=322,from=5
+          [\lnot p5,idx=323,from=5
+            [(p1 \liff p2) \liff p3,idx=326,from=322
+              [p4,idx=327,from=322
+                [p1 \liff p2,idx=330,from=326
+                  [p3,idx=331,from=326
+                    [p1,idx=334,from=330
+                      [p2,idx=335,from=330
+                        [p5,idx=338,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=339,from=4,close]
+                        ]
+                        [\lnot p5,idx=340,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=341,from=4
+                            [p4,idx=342,from=341
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=343,from=341
+                                [p3,idx=346,from=343
+                                  [\lnot (p2 \liff p1),idx=347,from=343
+                                    [p2,idx=350,from=347
+                                      [\lnot p1,idx=351,from=347,close]
+                                    ]
+                                    [p1,idx=352,from=347
+                                      [\lnot p2,idx=353,from=347,close]
+                                    ]
+                                  ]
+                                ]
+                                [p2 \liff p1,idx=348,from=343
+                                  [\lnot p3,idx=349,from=343,close]
+                                ]
+                              ]
+                            ]
+                            [p3 \liff (p2 \liff p1),idx=344,from=341
+                              [\lnot p4,idx=345,from=341,close]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                    [\lnot p1,idx=336,from=330
+                      [\lnot p2,idx=337,from=330
+                        [p5,idx=354,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=355,from=4,close]
+                        ]
+                        [\lnot p5,idx=356,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=357,from=4
+                            [p4,idx=358,from=357
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=359,from=357
+                                [p3,idx=362,from=359
+                                  [\lnot (p2 \liff p1),idx=363,from=359
+                                    [p2,idx=366,from=363
+                                      [\lnot p1,idx=367,from=363,close]
+                                    ]
+                                    [p1,idx=368,from=363
+                                      [\lnot p2,idx=369,from=363,close]
+                                    ]
+                                  ]
+                                ]
+                                [p2 \liff p1,idx=364,from=359
+                                  [\lnot p3,idx=365,from=359,close]
+                                ]
+                              ]
+                            ]
+                            [p3 \liff (p2 \liff p1),idx=360,from=357
+                              [\lnot p4,idx=361,from=357,close]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+                [\lnot (p1 \liff p2),idx=332,from=326
+                  [\lnot p3,idx=333,from=326
+                    [p1,idx=370,from=332
+                      [\lnot p2,idx=371,from=332
+                        [p5,idx=374,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=375,from=4,close]
+                        ]
+                        [\lnot p5,idx=376,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=377,from=4
+                            [p4,idx=378,from=377
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=379,from=377
+                                [p3,idx=382,from=379
+                                  [\lnot (p2 \liff p1),idx=383,from=379,close]
+                                ]
+                                [p2 \liff p1,idx=384,from=379
+                                  [\lnot p3,idx=385,from=379
+                                    [p2,idx=386,from=384
+                                      [p1,idx=387,from=384,close]
+                                    ]
+                                    [\lnot p2,idx=388,from=384
+                                      [\lnot p1,idx=389,from=384,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                            [p3 \liff (p2 \liff p1),idx=380,from=377
+                              [\lnot p4,idx=381,from=377,close]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                    [p2,idx=372,from=332
+                      [\lnot p1,idx=373,from=332
+                        [p5,idx=390,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=391,from=4,close]
+                        ]
+                        [\lnot p5,idx=392,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=393,from=4
+                            [p4,idx=394,from=393
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=395,from=393
+                                [p3,idx=398,from=395
+                                  [\lnot (p2 \liff p1),idx=399,from=395,close]
+                                ]
+                                [p2 \liff p1,idx=400,from=395
+                                  [\lnot p3,idx=401,from=395
+                                    [p2,idx=402,from=400
+                                      [p1,idx=403,from=400,close]
+                                    ]
+                                    [\lnot p2,idx=404,from=400
+                                      [\lnot p1,idx=405,from=400,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                            [p3 \liff (p2 \liff p1),idx=396,from=393
+                              [\lnot p4,idx=397,from=393,close]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+            [\lnot ((p1 \liff p2) \liff p3),idx=328,from=322
+              [\lnot p4,idx=329,from=322
+                [p1 \liff p2,idx=406,from=328
+                  [\lnot p3,idx=407,from=328
+                    [p1,idx=410,from=406
+                      [p2,idx=411,from=406
+                        [p5,idx=414,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=415,from=4,close]
+                        ]
+                        [\lnot p5,idx=416,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=417,from=4
+                            [p4,idx=418,from=417
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=419,from=417,close]
+                            ]
+                            [p3 \liff (p2 \liff p1),idx=420,from=417
+                              [\lnot p4,idx=421,from=417
+                                [p3,idx=422,from=420
+                                  [p2 \liff p1,idx=423,from=420,close]
+                                ]
+                                [\lnot p3,idx=424,from=420
+                                  [\lnot (p2 \liff p1),idx=425,from=420
+                                    [p2,idx=426,from=425
+                                      [\lnot p1,idx=427,from=425,close]
+                                    ]
+                                    [p1,idx=428,from=425
+                                      [\lnot p2,idx=429,from=425,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                    [\lnot p1,idx=412,from=406
+                      [\lnot p2,idx=413,from=406
+                        [p5,idx=430,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=431,from=4,close]
+                        ]
+                        [\lnot p5,idx=432,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=433,from=4
+                            [p4,idx=434,from=433
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=435,from=433,close]
+                            ]
+                            [p3 \liff (p2 \liff p1),idx=436,from=433
+                              [\lnot p4,idx=437,from=433
+                                [p3,idx=438,from=436
+                                  [p2 \liff p1,idx=439,from=436,close]
+                                ]
+                                [\lnot p3,idx=440,from=436
+                                  [\lnot (p2 \liff p1),idx=441,from=436
+                                    [p2,idx=442,from=441
+                                      [\lnot p1,idx=443,from=441,close]
+                                    ]
+                                    [p1,idx=444,from=441
+                                      [\lnot p2,idx=445,from=441,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+                [p3,idx=408,from=328
+                  [\lnot (p1 \liff p2),idx=409,from=328
+                    [p1,idx=446,from=409
+                      [\lnot p2,idx=447,from=409
+                        [p5,idx=450,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=451,from=4,close]
+                        ]
+                        [\lnot p5,idx=452,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=453,from=4
+                            [p4,idx=454,from=453
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=455,from=453,close]
+                            ]
+                            [p3 \liff (p2 \liff p1),idx=456,from=453
+                              [\lnot p4,idx=457,from=453
+                                [p3,idx=458,from=456
+                                  [p2 \liff p1,idx=459,from=456
+                                    [p2,idx=462,from=459
+                                      [p1,idx=463,from=459,close]
+                                    ]
+                                    [\lnot p2,idx=464,from=459
+                                      [\lnot p1,idx=465,from=459,close]
+                                    ]
+                                  ]
+                                ]
+                                [\lnot p3,idx=460,from=456
+                                  [\lnot (p2 \liff p1),idx=461,from=456,close]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                    [p2,idx=448,from=409
+                      [\lnot p1,idx=449,from=409
+                        [p5,idx=466,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=467,from=4,close]
+                        ]
+                        [\lnot p5,idx=468,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=469,from=4
+                            [p4,idx=470,from=469
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=471,from=469,close]
+                            ]
+                            [p3 \liff (p2 \liff p1),idx=472,from=469
+                              [\lnot p4,idx=473,from=469
+                                [p3,idx=474,from=472
+                                  [p2 \liff p1,idx=475,from=472
+                                    [p2,idx=478,from=475
+                                      [p1,idx=479,from=475,close]
+                                    ]
+                                    [\lnot p2,idx=480,from=475
+                                      [\lnot p1,idx=481,from=475,close]
+                                    ]
+                                  ]
+                                ]
+                                [\lnot p3,idx=476,from=472
+                                  [\lnot (p2 \liff p1),idx=477,from=472,close]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+        [p5,idx=324,from=5
+          [\lnot (((p1 \liff p2) \liff p3) \liff p4),idx=325,from=5
+            [(p1 \liff p2) \liff p3,idx=482,from=325
+              [\lnot p4,idx=483,from=325
+                [p1 \liff p2,idx=486,from=482
+                  [p3,idx=487,from=482
+                    [p1,idx=490,from=486
+                      [p2,idx=491,from=486
+                        [p5,idx=494,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=495,from=4
+                            [p4,idx=498,from=495
+                              [p3 \liff (p2 \liff p1),idx=499,from=495,close]
+                            ]
+                            [\lnot p4,idx=500,from=495
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=501,from=495
+                                [p3,idx=502,from=501
+                                  [\lnot (p2 \liff p1),idx=503,from=501
+                                    [p2,idx=506,from=503
+                                      [\lnot p1,idx=507,from=503,close]
+                                    ]
+                                    [p1,idx=508,from=503
+                                      [\lnot p2,idx=509,from=503,close]
+                                    ]
+                                  ]
+                                ]
+                                [p2 \liff p1,idx=504,from=501
+                                  [\lnot p3,idx=505,from=501,close]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                        [\lnot p5,idx=496,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=497,from=4,close]
+                        ]
+                      ]
+                    ]
+                    [\lnot p1,idx=492,from=486
+                      [\lnot p2,idx=493,from=486
+                        [p5,idx=510,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=511,from=4
+                            [p4,idx=514,from=511
+                              [p3 \liff (p2 \liff p1),idx=515,from=511,close]
+                            ]
+                            [\lnot p4,idx=516,from=511
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=517,from=511
+                                [p3,idx=518,from=517
+                                  [\lnot (p2 \liff p1),idx=519,from=517
+                                    [p2,idx=522,from=519
+                                      [\lnot p1,idx=523,from=519,close]
+                                    ]
+                                    [p1,idx=524,from=519
+                                      [\lnot p2,idx=525,from=519,close]
+                                    ]
+                                  ]
+                                ]
+                                [p2 \liff p1,idx=520,from=517
+                                  [\lnot p3,idx=521,from=517,close]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                        [\lnot p5,idx=512,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=513,from=4,close]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+                [\lnot (p1 \liff p2),idx=488,from=482
+                  [\lnot p3,idx=489,from=482
+                    [p1,idx=526,from=488
+                      [\lnot p2,idx=527,from=488
+                        [p5,idx=530,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=531,from=4
+                            [p4,idx=534,from=531
+                              [p3 \liff (p2 \liff p1),idx=535,from=531,close]
+                            ]
+                            [\lnot p4,idx=536,from=531
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=537,from=531
+                                [p3,idx=538,from=537
+                                  [\lnot (p2 \liff p1),idx=539,from=537,close]
+                                ]
+                                [p2 \liff p1,idx=540,from=537
+                                  [\lnot p3,idx=541,from=537
+                                    [p2,idx=542,from=540
+                                      [p1,idx=543,from=540,close]
+                                    ]
+                                    [\lnot p2,idx=544,from=540
+                                      [\lnot p1,idx=545,from=540,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                        [\lnot p5,idx=532,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=533,from=4,close]
+                        ]
+                      ]
+                    ]
+                    [p2,idx=528,from=488
+                      [\lnot p1,idx=529,from=488
+                        [p5,idx=546,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=547,from=4
+                            [p4,idx=550,from=547
+                              [p3 \liff (p2 \liff p1),idx=551,from=547,close]
+                            ]
+                            [\lnot p4,idx=552,from=547
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=553,from=547
+                                [p3,idx=554,from=553
+                                  [\lnot (p2 \liff p1),idx=555,from=553,close]
+                                ]
+                                [p2 \liff p1,idx=556,from=553
+                                  [\lnot p3,idx=557,from=553
+                                    [p2,idx=558,from=556
+                                      [p1,idx=559,from=556,close]
+                                    ]
+                                    [\lnot p2,idx=560,from=556
+                                      [\lnot p1,idx=561,from=556,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                        [\lnot p5,idx=548,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=549,from=4,close]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+            [p4,idx=484,from=325
+              [\lnot ((p1 \liff p2) \liff p3),idx=485,from=325
+                [p1 \liff p2,idx=562,from=485
+                  [\lnot p3,idx=563,from=485
+                    [p1,idx=566,from=562
+                      [p2,idx=567,from=562
+                        [p5,idx=570,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=571,from=4
+                            [p4,idx=574,from=571
+                              [p3 \liff (p2 \liff p1),idx=575,from=571
+                                [p3,idx=578,from=575
+                                  [p2 \liff p1,idx=579,from=575,close]
+                                ]
+                                [\lnot p3,idx=580,from=575
+                                  [\lnot (p2 \liff p1),idx=581,from=575
+                                    [p2,idx=582,from=581
+                                      [\lnot p1,idx=583,from=581,close]
+                                    ]
+                                    [p1,idx=584,from=581
+                                      [\lnot p2,idx=585,from=581,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                            [\lnot p4,idx=576,from=571
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=577,from=571,close]
+                            ]
+                          ]
+                        ]
+                        [\lnot p5,idx=572,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=573,from=4,close]
+                        ]
+                      ]
+                    ]
+                    [\lnot p1,idx=568,from=562
+                      [\lnot p2,idx=569,from=562
+                        [p5,idx=586,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=587,from=4
+                            [p4,idx=590,from=587
+                              [p3 \liff (p2 \liff p1),idx=591,from=587
+                                [p3,idx=594,from=591
+                                  [p2 \liff p1,idx=595,from=591,close]
+                                ]
+                                [\lnot p3,idx=596,from=591
+                                  [\lnot (p2 \liff p1),idx=597,from=591
+                                    [p2,idx=598,from=597
+                                      [\lnot p1,idx=599,from=597,close]
+                                    ]
+                                    [p1,idx=600,from=597
+                                      [\lnot p2,idx=601,from=597,close]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                            [\lnot p4,idx=592,from=587
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=593,from=587,close]
+                            ]
+                          ]
+                        ]
+                        [\lnot p5,idx=588,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=589,from=4,close]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+                [p3,idx=564,from=485
+                  [\lnot (p1 \liff p2),idx=565,from=485
+                    [p1,idx=602,from=565
+                      [\lnot p2,idx=603,from=565
+                        [p5,idx=606,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=607,from=4
+                            [p4,idx=610,from=607
+                              [p3 \liff (p2 \liff p1),idx=611,from=607
+                                [p3,idx=614,from=611
+                                  [p2 \liff p1,idx=615,from=611
+                                    [p2,idx=618,from=615
+                                      [p1,idx=619,from=615,close]
+                                    ]
+                                    [\lnot p2,idx=620,from=615
+                                      [\lnot p1,idx=621,from=615,close]
+                                    ]
+                                  ]
+                                ]
+                                [\lnot p3,idx=616,from=611
+                                  [\lnot (p2 \liff p1),idx=617,from=611,close]
+                                ]
+                              ]
+                            ]
+                            [\lnot p4,idx=612,from=607
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=613,from=607,close]
+                            ]
+                          ]
+                        ]
+                        [\lnot p5,idx=608,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=609,from=4,close]
+                        ]
+                      ]
+                    ]
+                    [p2,idx=604,from=565
+                      [\lnot p1,idx=605,from=565
+                        [p5,idx=622,from=4
+                          [p4 \liff (p3 \liff (p2 \liff p1)),idx=623,from=4
+                            [p4,idx=626,from=623
+                              [p3 \liff (p2 \liff p1),idx=627,from=623
+                                [p3,idx=630,from=627
+                                  [p2 \liff p1,idx=631,from=627
+                                    [p2,idx=634,from=631
+                                      [p1,idx=635,from=631,close]
+                                    ]
+                                    [\lnot p2,idx=636,from=631
+                                      [\lnot p1,idx=637,from=631,close]
+                                    ]
+                                  ]
+                                ]
+                                [\lnot p3,idx=632,from=627
+                                  [\lnot (p2 \liff p1),idx=633,from=627,close]
+                                ]
+                              ]
+                            ]
+                            [\lnot p4,idx=628,from=623
+                              [\lnot (p3 \liff (p2 \liff p1)),idx=629,from=623,close]
+                            ]
+                          ]
+                        ]
+                        [\lnot p5,idx=624,from=4
+                          [\lnot (p4 \liff (p3 \liff (p2 \liff p1))),idx=625,from=4,close]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
+\end{forest}
+\end{document}

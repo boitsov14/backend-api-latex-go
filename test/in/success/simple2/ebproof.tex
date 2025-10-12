@@ -1,0 +1,27 @@
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage{ebproof,lplfitch}
+\begin{document}
+\begin{prooftree}
+\infer{0}[\scriptsize Axiom]{p &\vdash q, p}
+\infer{0}[\scriptsize Axiom]{r, q &\vdash q, p}
+\infer{1}[\scriptsize $\land$: Left]{q \land r &\vdash q, p}
+\infer{2}[\scriptsize $\lor$: Left]{p \lor (q \land r) &\vdash q, p}
+\infer{1}[\scriptsize $\lor$: Right]{p \lor (q \land r) &\vdash p \lor q}
+\infer{0}[\scriptsize Axiom]{p &\vdash r, p}
+\infer{0}[\scriptsize Axiom]{r, q &\vdash r, p}
+\infer{1}[\scriptsize $\land$: Left]{q \land r &\vdash r, p}
+\infer{2}[\scriptsize $\lor$: Left]{p \lor (q \land r) &\vdash r, p}
+\infer{1}[\scriptsize $\lor$: Right]{p \lor (q \land r) &\vdash p \lor r}
+\infer{2}[\scriptsize $\land$: Right]{p \lor (q \land r) &\vdash (p \lor q) \land (p \lor r)}
+\infer{0}[\scriptsize Axiom]{p \lor q, p &\vdash q \land r, p}
+\infer{0}[\scriptsize Axiom]{r, p &\vdash q \land r, p}
+\infer{0}[\scriptsize Axiom]{r, q &\vdash q, p}
+\infer{0}[\scriptsize Axiom]{r, q &\vdash r, p}
+\infer{2}[\scriptsize $\land$: Right]{r, q &\vdash q \land r, p}
+\infer{2}[\scriptsize $\lor$: Left]{p \lor q, r &\vdash q \land r, p}
+\infer{2}[\scriptsize $\lor$: Left]{p \lor q, p \lor r &\vdash q \land r, p}
+\infer{1}[\scriptsize $\land$: Left]{(p \lor q) \land (p \lor r) &\vdash q \land r, p}
+\infer{1}[\scriptsize $\lor$: Right]{(p \lor q) \land (p \lor r) &\vdash p \lor (q \land r)}
+\infer{2}[\scriptsize $\liff$: Right]{ &\vdash (p \lor (q \land r)) \liff ((p \lor q) \land (p \lor r))}
+\end{prooftree}
+\end{document}

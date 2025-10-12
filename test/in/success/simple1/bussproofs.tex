@@ -1,0 +1,12 @@
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage{bussproofs,lplfitch}
+\begin{document}
+\begin{prooftree}
+\renewcommand{\fCenter}{\ \mbox{$\vdash$}\ }
+\AxiomC{}
+\RightLabel{\scriptsize Axiom}
+\UnaryInf$P \fCenter P$
+\RightLabel{\scriptsize $\lif$: Right}
+\UnaryInf$ \fCenter P \lif P$
+\end{prooftree}
+\end{document}

@@ -1,0 +1,372 @@
+% ref: https://tex.stackexchange.com/a/570639
+\documentclass[preview,varwidth=\maxdimen,border=10pt]{standalone}
+\usepackage[linguistics]{forest}
+\usepackage{array,lplfitch}
+\newcolumntype{C}[1]{>{\centering $}p{#1}<{$}}
+\forestset{
+  declare toks={from}{},
+  declare toks={idx}{},
+  declare toks register={claim},
+  declare boolean={align me}{0},
+  declare dimen={my width}{0pt},
+  declare dimen register={lmeas},
+  declare dimen register={rmeas},
+  lmeas/.pgfmath=width("99."),
+  rmeas/.pgfmath=width("(99)"),
+  proof/.style={
+    for tree={math content},
+    for root=align me,
+    before typesetting nodes={
+      if claim={}{}{
+        replace by/.process={Rw{claim}{[##1,math content,append]}},
+        no edge,
+        before computing xy={l'=2\baselineskip}
+      }
+    },
+    where n children=1{
+      !1.no edge,
+      before computing xy={!1.l'=\baselineskip}
+    }{},
+    for root={align me},
+    where n children>=2{
+      for children={align me}
+    }{},
+    before packing={
+      where align me={
+        tempdima/.max={>{OOw2+d}{max x}{min x}{##1-##2}}{
+          walk and save={temptoksa}{
+            current,
+            until={>O_=!{n children}{1}}{first,typeset node}
+          }
+        },
+        for nodewalk={load=temptoksa}{
+          my width/.register=tempdima,
+          typeset node
+        }
+      }{},
+      for tree={
+        tempcounta=idx,
+        align=p{\foresteregister{lmeas}}C{\foresteoption{my width}}p{\foresteregister{rmeas}},
+        content/.process={
+          OR OSl+tt= ? w w3 {content}{tempcounta}{from}{}{}
+          {(##1)}{##2.\quad & ##1\quad & ##3}
+        },
+        typeset node
+      }
+    },
+    close/.style={
+      label={[xshift=-2.5pt]below:$\times$}
+    }
+  }
+}
+\begin{document}
+\begin{forest}
+  proof,
+  claim=\vdash ((o11 \lor o12 \lor o13) \land (o21 \lor o22 \lor o23) \land (o31 \lor o32) \land (o41 \lor o42 \lor o43)) \lif ((o11 \land o21) \lor (o11 \land o31) \lor (o11 \land o41) \lor (o21 \land o31) \lor (o21 \land o41) \lor (o31 \land o41) \lor (o12 \land o22) \lor (o12 \land o32) \lor (o12 \land o42) \lor (o22 \land o32) \lor (o22 \land o42) \lor (o32 \land o42) \lor (o13 \land o23) \lor o13 \lor (o13 \land o43) \lor o23 \lor (o23 \land o43) \lor o43)
+  [\lnot (((o11 \lor o12 \lor o13) \land (o21 \lor o22 \lor o23) \land (o31 \lor o32) \land (o41 \lor o42 \lor o43)) \lif ((o11 \land o21) \lor (o11 \land o31) \lor (o11 \land o41) \lor (o21 \land o31) \lor (o21 \land o41) \lor (o31 \land o41) \lor (o12 \land o22) \lor (o12 \land o32) \lor (o12 \land o42) \lor (o22 \land o32) \lor (o22 \land o42) \lor (o32 \land o42) \lor (o13 \land o23) \lor o13 \lor (o13 \land o43) \lor o23 \lor (o23 \land o43) \lor o43)),idx=1
+    [(o11 \lor o12 \lor o13) \land (o21 \lor o22 \lor o23) \land (o31 \lor o32) \land (o41 \lor o42 \lor o43),idx=2,from=1
+      [\lnot ((o11 \land o21) \lor (o11 \land o31) \lor (o11 \land o41) \lor (o21 \land o31) \lor (o21 \land o41) \lor (o31 \land o41) \lor (o12 \land o22) \lor (o12 \land o32) \lor (o12 \land o42) \lor (o22 \land o32) \lor (o22 \land o42) \lor (o32 \land o42) \lor (o13 \land o23) \lor o13 \lor (o13 \land o43) \lor o23 \lor (o23 \land o43) \lor o43),idx=3,from=1
+        [\lnot (o11 \land o21),idx=4,from=3
+          [\lnot (o11 \land o31),idx=5,from=3
+            [\lnot (o11 \land o41),idx=6,from=3
+              [\lnot (o21 \land o31),idx=7,from=3
+                [\lnot (o21 \land o41),idx=8,from=3
+                  [\lnot (o31 \land o41),idx=9,from=3
+                    [\lnot (o12 \land o22),idx=10,from=3
+                      [\lnot (o12 \land o32),idx=11,from=3
+                        [\lnot (o12 \land o42),idx=12,from=3
+                          [\lnot (o22 \land o32),idx=13,from=3
+                            [\lnot (o22 \land o42),idx=14,from=3
+                              [\lnot (o32 \land o42),idx=15,from=3
+                                [\lnot (o13 \land o23),idx=16,from=3
+                                  [\lnot o13,idx=17,from=3
+                                    [\lnot (o13 \land o43),idx=18,from=3
+                                      [\lnot o23,idx=19,from=3
+                                        [\lnot (o23 \land o43),idx=20,from=3
+                                          [\lnot o43,idx=21,from=3
+                                            [o11 \lor o12 \lor o13,idx=22,from=2
+                                              [o21 \lor o22 \lor o23,idx=23,from=2
+                                                [o31 \lor o32,idx=24,from=2
+                                                  [o41 \lor o42 \lor o43,idx=25,from=2
+                                                    [o41,idx=26,from=25
+                                                      [o31,idx=29,from=24
+                                                        [o21,idx=31,from=23
+                                                          [o11,idx=34,from=22
+                                                            [\lnot o32,idx=37,from=15
+                                                              [\lnot o22,idx=39,from=14
+                                                                [\lnot o12,idx=41,from=12
+                                                                  [\lnot o31,idx=43,from=9,close]
+                                                                  [\lnot o41,idx=44,from=9,close]
+                                                                ]
+                                                                [\lnot o42,idx=42,from=12
+                                                                  [\lnot o31,idx=45,from=9,close]
+                                                                  [\lnot o41,idx=46,from=9,close]
+                                                                ]
+                                                              ]
+                                                              [\lnot o42,idx=40,from=14
+                                                                [\lnot o12,idx=47,from=10
+                                                                  [\lnot o31,idx=49,from=9,close]
+                                                                  [\lnot o41,idx=50,from=9,close]
+                                                                ]
+                                                                [\lnot o22,idx=48,from=10
+                                                                  [\lnot o31,idx=51,from=9,close]
+                                                                  [\lnot o41,idx=52,from=9,close]
+                                                                ]
+                                                              ]
+                                                            ]
+                                                            [\lnot o42,idx=38,from=15
+                                                              [\lnot o22,idx=53,from=13
+                                                                [\lnot o12,idx=55,from=11
+                                                                  [\lnot o31,idx=57,from=9,close]
+                                                                  [\lnot o41,idx=58,from=9,close]
+                                                                ]
+                                                                [\lnot o32,idx=56,from=11
+                                                                  [\lnot o31,idx=59,from=9,close]
+                                                                  [\lnot o41,idx=60,from=9,close]
+                                                                ]
+                                                              ]
+                                                              [\lnot o32,idx=54,from=13
+                                                                [\lnot o12,idx=61,from=10
+                                                                  [\lnot o31,idx=63,from=9,close]
+                                                                  [\lnot o41,idx=64,from=9,close]
+                                                                ]
+                                                                [\lnot o22,idx=62,from=10
+                                                                  [\lnot o31,idx=65,from=9,close]
+                                                                  [\lnot o41,idx=66,from=9,close]
+                                                                ]
+                                                              ]
+                                                            ]
+                                                          ]
+                                                          [o12,idx=35,from=22
+                                                            [\lnot o32,idx=67,from=15
+                                                              [\lnot o22,idx=69,from=14
+                                                                [\lnot o12,idx=71,from=12,close]
+                                                                [\lnot o42,idx=72,from=12
+                                                                  [\lnot o31,idx=73,from=9,close]
+                                                                  [\lnot o41,idx=74,from=9,close]
+                                                                ]
+                                                              ]
+                                                              [\lnot o42,idx=70,from=14
+                                                                [\lnot o12,idx=75,from=10,close]
+                                                                [\lnot o22,idx=76,from=10
+                                                                  [\lnot o31,idx=77,from=9,close]
+                                                                  [\lnot o41,idx=78,from=9,close]
+                                                                ]
+                                                              ]
+                                                            ]
+                                                            [\lnot o42,idx=68,from=15
+                                                              [\lnot o22,idx=79,from=13
+                                                                [\lnot o12,idx=81,from=11,close]
+                                                                [\lnot o32,idx=82,from=11
+                                                                  [\lnot o31,idx=83,from=9,close]
+                                                                  [\lnot o41,idx=84,from=9,close]
+                                                                ]
+                                                              ]
+                                                              [\lnot o32,idx=80,from=13
+                                                                [\lnot o12,idx=85,from=10,close]
+                                                                [\lnot o22,idx=86,from=10
+                                                                  [\lnot o31,idx=87,from=9,close]
+                                                                  [\lnot o41,idx=88,from=9,close]
+                                                                ]
+                                                              ]
+                                                            ]
+                                                          ]
+                                                          [o13,idx=36,from=22,close]
+                                                        ]
+                                                        [o22,idx=32,from=23
+                                                          [o11,idx=89,from=22
+                                                            [\lnot o32,idx=92,from=15
+                                                              [\lnot o22,idx=94,from=14,close]
+                                                              [\lnot o42,idx=95,from=14
+                                                                [\lnot o12,idx=96,from=10
+                                                                  [\lnot o31,idx=98,from=9,close]
+                                                                  [\lnot o41,idx=99,from=9,close]
+                                                                ]
+                                                                [\lnot o22,idx=97,from=10,close]
+                                                              ]
+                                                            ]
+                                                            [\lnot o42,idx=93,from=15
+                                                              [\lnot o22,idx=100,from=13,close]
+                                                              [\lnot o32,idx=101,from=13
+                                                                [\lnot o12,idx=102,from=10
+                                                                  [\lnot o31,idx=104,from=9,close]
+                                                                  [\lnot o41,idx=105,from=9,close]
+                                                                ]
+                                                                [\lnot o22,idx=103,from=10,close]
+                                                              ]
+                                                            ]
+                                                          ]
+                                                          [o12,idx=90,from=22
+                                                            [\lnot o32,idx=106,from=15
+                                                              [\lnot o22,idx=108,from=14,close]
+                                                              [\lnot o42,idx=109,from=14
+                                                                [\lnot o12,idx=110,from=10,close]
+                                                                [\lnot o22,idx=111,from=10,close]
+                                                              ]
+                                                            ]
+                                                            [\lnot o42,idx=107,from=15
+                                                              [\lnot o22,idx=112,from=13,close]
+                                                              [\lnot o32,idx=113,from=13
+                                                                [\lnot o12,idx=114,from=10,close]
+                                                                [\lnot o22,idx=115,from=10,close]
+                                                              ]
+                                                            ]
+                                                          ]
+                                                          [o13,idx=91,from=22,close]
+                                                        ]
+                                                        [o23,idx=33,from=23,close]
+                                                      ]
+                                                      [o32,idx=30,from=24
+                                                        [o21,idx=116,from=23
+                                                          [o11,idx=119,from=22
+                                                            [\lnot o32,idx=122,from=15,close]
+                                                            [\lnot o42,idx=123,from=15
+                                                              [\lnot o22,idx=124,from=13
+                                                                [\lnot o12,idx=126,from=11
+                                                                  [\lnot o31,idx=128,from=9
+                                                                    [\lnot o21,idx=130,from=8,close]
+                                                                    [\lnot o41,idx=131,from=8,close]
+                                                                  ]
+                                                                  [\lnot o41,idx=129,from=9,close]
+                                                                ]
+                                                                [\lnot o32,idx=127,from=11,close]
+                                                              ]
+                                                              [\lnot o32,idx=125,from=13,close]
+                                                            ]
+                                                          ]
+                                                          [o12,idx=120,from=22
+                                                            [\lnot o32,idx=132,from=15,close]
+                                                            [\lnot o42,idx=133,from=15
+                                                              [\lnot o22,idx=134,from=13
+                                                                [\lnot o12,idx=136,from=11,close]
+                                                                [\lnot o32,idx=137,from=11,close]
+                                                              ]
+                                                              [\lnot o32,idx=135,from=13,close]
+                                                            ]
+                                                          ]
+                                                          [o13,idx=121,from=22,close]
+                                                        ]
+                                                        [o22,idx=117,from=23
+                                                          [o11,idx=138,from=22
+                                                            [\lnot o32,idx=141,from=15,close]
+                                                            [\lnot o42,idx=142,from=15
+                                                              [\lnot o22,idx=143,from=13,close]
+                                                              [\lnot o32,idx=144,from=13,close]
+                                                            ]
+                                                          ]
+                                                          [o12,idx=139,from=22
+                                                            [\lnot o32,idx=145,from=15,close]
+                                                            [\lnot o42,idx=146,from=15
+                                                              [\lnot o22,idx=147,from=13,close]
+                                                              [\lnot o32,idx=148,from=13,close]
+                                                            ]
+                                                          ]
+                                                          [o13,idx=140,from=22,close]
+                                                        ]
+                                                        [o23,idx=118,from=23,close]
+                                                      ]
+                                                    ]
+                                                    [o42,idx=27,from=25
+                                                      [o31,idx=149,from=24
+                                                        [o21,idx=151,from=23
+                                                          [o11,idx=154,from=22
+                                                            [\lnot o32,idx=157,from=15
+                                                              [\lnot o22,idx=159,from=14
+                                                                [\lnot o12,idx=161,from=12
+                                                                  [\lnot o31,idx=163,from=9,close]
+                                                                  [\lnot o41,idx=164,from=9
+                                                                    [\lnot o21,idx=165,from=7,close]
+                                                                    [\lnot o31,idx=166,from=7,close]
+                                                                  ]
+                                                                ]
+                                                                [\lnot o42,idx=162,from=12,close]
+                                                              ]
+                                                              [\lnot o42,idx=160,from=14,close]
+                                                            ]
+                                                            [\lnot o42,idx=158,from=15,close]
+                                                          ]
+                                                          [o12,idx=155,from=22
+                                                            [\lnot o32,idx=167,from=15
+                                                              [\lnot o22,idx=169,from=14
+                                                                [\lnot o12,idx=171,from=12,close]
+                                                                [\lnot o42,idx=172,from=12,close]
+                                                              ]
+                                                              [\lnot o42,idx=170,from=14,close]
+                                                            ]
+                                                            [\lnot o42,idx=168,from=15,close]
+                                                          ]
+                                                          [o13,idx=156,from=22,close]
+                                                        ]
+                                                        [o22,idx=152,from=23
+                                                          [o11,idx=173,from=22
+                                                            [\lnot o32,idx=176,from=15
+                                                              [\lnot o22,idx=178,from=14,close]
+                                                              [\lnot o42,idx=179,from=14,close]
+                                                            ]
+                                                            [\lnot o42,idx=177,from=15,close]
+                                                          ]
+                                                          [o12,idx=174,from=22
+                                                            [\lnot o32,idx=180,from=15
+                                                              [\lnot o22,idx=182,from=14,close]
+                                                              [\lnot o42,idx=183,from=14,close]
+                                                            ]
+                                                            [\lnot o42,idx=181,from=15,close]
+                                                          ]
+                                                          [o13,idx=175,from=22,close]
+                                                        ]
+                                                        [o23,idx=153,from=23,close]
+                                                      ]
+                                                      [o32,idx=150,from=24
+                                                        [o21,idx=184,from=23
+                                                          [o11,idx=187,from=22
+                                                            [\lnot o32,idx=190,from=15,close]
+                                                            [\lnot o42,idx=191,from=15,close]
+                                                          ]
+                                                          [o12,idx=188,from=22
+                                                            [\lnot o32,idx=192,from=15,close]
+                                                            [\lnot o42,idx=193,from=15,close]
+                                                          ]
+                                                          [o13,idx=189,from=22,close]
+                                                        ]
+                                                        [o22,idx=185,from=23
+                                                          [o11,idx=194,from=22
+                                                            [\lnot o32,idx=197,from=15,close]
+                                                            [\lnot o42,idx=198,from=15,close]
+                                                          ]
+                                                          [o12,idx=195,from=22
+                                                            [\lnot o32,idx=199,from=15,close]
+                                                            [\lnot o42,idx=200,from=15,close]
+                                                          ]
+                                                          [o13,idx=196,from=22,close]
+                                                        ]
+                                                        [o23,idx=186,from=23,close]
+                                                      ]
+                                                    ]
+                                                    [o43,idx=28,from=25,close]
+                                                  ]
+                                                ]
+                                              ]
+                                            ]
+                                          ]
+                                        ]
+                                      ]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
+\end{forest}
+\end{document}
