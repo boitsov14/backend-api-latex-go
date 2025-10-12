@@ -4,5 +4,5 @@
 *.pdf
 # bin
 /bin/
-# todo
-*.tex
+# env
+.env

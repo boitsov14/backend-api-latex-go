@@ -45,7 +45,7 @@ func TestSuccess(t *testing.T) {
 			return err
 		}
 
-		t.Run(filepath.ToSlash(inRel)+": svg", func(t *testing.T) {
+		t.Run(filepath.ToSlash(inRel)+":svg", func(t *testing.T) {
 			// run sub tests in parallel
 			// t.Parallel()
 
@@ -70,7 +70,7 @@ func TestSuccess(t *testing.T) {
 			require.NoError(t, os.WriteFile(svgPath, r.Body(), 0600))
 		})
 
-		t.Run(filepath.ToSlash(inRel)+": png", func(t *testing.T) {
+		t.Run(filepath.ToSlash(inRel)+":png", func(t *testing.T) {
 			// run sub tests in parallel
 			// t.Parallel()
 
@@ -95,7 +95,7 @@ func TestSuccess(t *testing.T) {
 			require.NoError(t, os.WriteFile(pngPath, r.Body(), 0600))
 		})
 
-		t.Run(filepath.ToSlash(inRel)+": pdf", func(t *testing.T) {
+		t.Run(filepath.ToSlash(inRel)+":pdf", func(t *testing.T) {
 			// run sub tests in parallel
 			// t.Parallel()
 

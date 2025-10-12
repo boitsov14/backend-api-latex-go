@@ -118,7 +118,44 @@ all:
     just container
 
 ###################################
-# Deploy
+# Artifact Registry
 ###################################
 
-# Deploy minimal-prooftree-latex
+# Image path
+IMAGE := env_var('REGION') + '-docker.pkg.dev/' + env_var('PROJECT_ID') + '/' + env_var('REPO') + '/' + env_var('PACKAGE')
+
+# Setup tag
+tag:
+    docker tag latex {{ IMAGE }}
+
+# Push image to Artifact Registry
+push:
+    docker push {{ IMAGE }}:latest
+
+# List images in Artifact Registry
+list:
+    gcloud artifacts docker images list {{ IMAGE }}
+
+# Delete image from Artifact Registry
+delete:
+    gcloud artifacts docker images delete {{ IMAGE }} --quiet
+
+###################################
+# Cloud Run
+###################################
+
+# Deploy to Cloud Run
+deploy:
+    gcloud run deploy $PACKAGE \
+    --image {{ IMAGE }}:latest \
+    --project $PROJECT_ID \
+    --region $REGION \
+    --allow-unauthenticated \
+    --no-cpu-boost \
+    --cpu=1 \
+    --memory=256Mi \
+    --timeout=30 \
+    --concurrency=5 \
+    --max-instances=5 \
+    --port=8080 \
+    --set-env-vars=GOMEMLIMIT=200MiB
